@@ -42,9 +42,9 @@ class Player {
 const map = [
     ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
     ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ','-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
     ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ',' ',' ',' ',' ',' ',' ','-'],
     ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
     ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
     ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
@@ -102,34 +102,81 @@ map.forEach((row,i) => {
     })
 })
 
+function circleColliderWithRectangle({circle, rectangle}){
+    return (
+        circle.position.y - circle.radius + circle.velocity.y <= rectangle.position.y + rectangle.height &&
+        circle.position.x + circle.radius + circle.velocity.x >= rectangle.position.x &&
+        circle.position.y + circle.radius + circle.velocity.y >= rectangle.position.y &&
+        circle.position.x - circle.radius + circle.velocity.x <= rectangle.position.x + rectangle.width
+    )
+}
+
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width,canvas.height)
+    
+    if (keys.w.pressed && lastKey === 'w') {
+        for (let i =0; i<boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleColliderWithRectangle({circle: {...player, velocity:{x:0,y:-5}}, rectangle: boundary})
+            ){
+                player.velocity.y=0
+                break
+            } else {
+                player.velocity.y=-5
+            }
+        }
+
+    } else if (keys.a.pressed && lastKey === 'a') {
+        for (let i =0; i<boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleColliderWithRectangle({circle: {...player, velocity:{x:-5,y:0}}, rectangle: boundary})
+            ){
+                player.velocity.x=0
+                break
+            } else {
+                player.velocity.x=-5
+            }
+        }
+
+    } else if (keys.s.pressed && lastKey === 's') {
+        for (let i =0; i<boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleColliderWithRectangle({circle: {...player, velocity:{x:0,y:5}}, rectangle: boundary})
+            ){
+                player.velocity.y=0
+                break
+            } else {
+                player.velocity.y=5
+            }
+        }
+
+    } else if (keys.d.pressed && lastKey === 'd') {
+        for (let i =0; i<boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (circleColliderWithRectangle({circle: {...player, velocity:{x:5,y:0}}, rectangle: boundary})
+            ){
+                player.velocity.x=0
+                break
+            } else {
+                player.velocity.x=5
+            }
+        }
+    }
+
     boundaries.forEach((boundary) => {
         boundary.draw()
 
-        if (player.position.y - player.radius + player.velocity.y <= boundary.position.y + boundary.height &&
-            player.position.x + player.radius + player.velocity.x >= boundary.position.x &&
-            player.position.y + player.radius + player.velocity.y >= boundary.position.y &&
-            player.position.x - player.radius + player.velocity.x <= boundary.position.x + boundary.width
+        if (circleColliderWithRectangle({circle: player, rectangle: boundary})
         ){
-            player.velocity.x = 0
+            player.velocity.x = -5
             player.velocity.y = 0
         }
     })
+
     player.update()
     player.velocity.y=0
     player.velocity.x=0
-
-    if (keys.w.pressed && lastKey === 'w') {
-        player.velocity.y=-5
-    } else if (keys.a.pressed && lastKey === 'a') {
-        player.velocity.x=-5
-    } else if (keys.s.pressed && lastKey === 's') {
-        player.velocity.y=5
-    } else if (keys.d.pressed && lastKey === 'd') {
-        player.velocity.x=5
-    }
 }
 
 animate()
