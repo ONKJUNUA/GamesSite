@@ -39,23 +39,6 @@ class Player {
     }
 }
 
-const map = [
-    ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ','-',' ','-',' ','-',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
-    ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-']
-]
 const boundaries = []
 const player = new Player({
     position: {
@@ -82,8 +65,27 @@ const keys = {
         pressed:false
     }
 }
-
 let lastKey = ''
+let lastKeyws = ''
+let lastKeyad = ''
+
+const map = [
+    ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-',' ','-'],
+    ['-',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','-'],
+    ['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-']
+]
 
 map.forEach((row,i) => {
     row.forEach((symbol,j) => {
@@ -115,7 +117,7 @@ function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width,canvas.height)
     
-    if (keys.w.pressed && lastKey === 'w') {
+    if (keys.w.pressed && lastKeyws === 'w') {
         for (let i =0; i<boundaries.length; i++) {
             const boundary = boundaries[i]
             if (circleColliderWithRectangle({circle: {...player, velocity:{x:0,y:-5}}, rectangle: boundary})
@@ -127,7 +129,7 @@ function animate() {
             }
         }
 
-    } else if (keys.a.pressed && lastKey === 'a') {
+    } if (keys.a.pressed && lastKeyad === 'a') {
         for (let i =0; i<boundaries.length; i++) {
             const boundary = boundaries[i]
             if (circleColliderWithRectangle({circle: {...player, velocity:{x:-5,y:0}}, rectangle: boundary})
@@ -139,7 +141,7 @@ function animate() {
             }
         }
 
-    } else if (keys.s.pressed && lastKey === 's') {
+    } if (keys.s.pressed && lastKeyws === 's') {
         for (let i =0; i<boundaries.length; i++) {
             const boundary = boundaries[i]
             if (circleColliderWithRectangle({circle: {...player, velocity:{x:0,y:5}}, rectangle: boundary})
@@ -151,7 +153,7 @@ function animate() {
             }
         }
 
-    } else if (keys.d.pressed && lastKey === 'd') {
+    } if (keys.d.pressed && lastKeyad === 'd') {
         for (let i =0; i<boundaries.length; i++) {
             const boundary = boundaries[i]
             if (circleColliderWithRectangle({circle: {...player, velocity:{x:5,y:0}}, rectangle: boundary})
@@ -162,6 +164,21 @@ function animate() {
                 player.velocity.x=5
             }
         }
+    } if (player.velocity.x!=0 && player.velocity.y!=0){
+        switch(lastKey){
+            case 'w':
+                lastKeyad = ''
+                break
+            case 'a':
+                lastKeyws = ''
+                break
+            case 's':
+                lastKeyad = ''
+                break
+            case 'd':
+                lastKeyws = ''
+                break
+        }
     }
 
     boundaries.forEach((boundary) => {
@@ -169,7 +186,7 @@ function animate() {
 
         if (circleColliderWithRectangle({circle: player, rectangle: boundary})
         ){
-            player.velocity.x = -5
+            player.velocity.x = 0
             player.velocity.y = 0
         }
     })
@@ -185,38 +202,25 @@ addEventListener('keydown',({key})=>{
     switch(key){
         case 'w':
             keys.w.pressed = true
+            lastKeyws = 'w'
             lastKey = 'w'
             break
         case 'a':
             keys.a.pressed = true
+            lastKeyad = 'a'
             lastKey = 'a'
             break
         case 's':
             keys.s.pressed = true
+            lastKeyws = 's'
             lastKey = 's'
             break
         case 'd':
             keys.d.pressed = true
+            lastKeyad = 'd'
             lastKey = 'd'
             break
 
     }
 })
 
-addEventListener('keyup',({key})=>{
-    switch(key){
-        case 'w':
-            keys.w.pressed = false
-            break
-        case 'a':
-            keys.a.pressed = false
-            break
-        case 's':
-            keys.s.pressed = false
-            break
-        case 'd':
-            keys.d.pressed = false
-            break
-
-    }
-})
