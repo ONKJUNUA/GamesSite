@@ -1,0 +1,24 @@
+body {
+    background-color: rgb(27, 27, 27);
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+canvas {
+    margin-left:28%;
+    width: 100%;
+}
+
+p {
+    text-align: center;
+}
+
+.title{
+    width: 400px;
+}
+
+@media (max-width: 900px){
+    canvas{
+        width:220%;
+        margin-left:2%;
+    }
+}

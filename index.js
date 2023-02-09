@@ -1,8 +1,8 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = screen.width
+canvas.height = screen.height
 
 class Boundary {
     static width = 40
@@ -80,13 +80,14 @@ const keys = {
         pressed:false
     }
 }
+
 let lastKey = ''
 let lastKeyws = ''
 let lastKeyad = ''
 
 const map = [
     ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
-    ['|', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+    ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
     ['|', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '^', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '|'],
     ['|', '.', '.', '.', '.', '_', '.', '.', '.', '.', '|', '.', '.', '.', '.', '_', '.', '.', '.', '.', '|'],
     ['|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|'],
@@ -106,7 +107,7 @@ const map = [
     ['|', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '_', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '|'],
     ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
     ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
-  ]
+]
 
 function createImage(src) {
     const image=new Image()
@@ -367,7 +368,9 @@ function animate() {
                 player.velocity.x=5
             }
         }
-    } if (player.velocity.x!=0 && player.velocity.y!=0){
+        
+    } 
+    if (player.velocity.x!=0 && player.velocity.y!=0){
         switch(lastKey){
             case 'w':
                 lastKeyad = ''
@@ -383,11 +386,15 @@ function animate() {
                 break
         }
     }
-
-    palets.forEach(palet => {
+    for (let i = palets.length-1; 0 < i; i--) {
+        const palet = palets[i]
         palet.draw()
-    })
 
+        if (Math.hypot(palet.position.x - player.position.x, palet.position.y - player.position.y) < palet.radius + player.radius){
+            palets.splice(i,1)
+        }
+    }
+   
     boundaries.forEach((boundary) => {
         boundary.draw()
 
@@ -408,21 +415,25 @@ animate()
 addEventListener('keydown',({key})=>{
     switch(key){
         case 'w':
+        case "ArrowUp":
             keys.w.pressed = true
             lastKeyws = 'w'
             lastKey = 'w'
             break
         case 'a':
+        case "ArrowLeft":
             keys.a.pressed = true
             lastKeyad = 'a'
             lastKey = 'a'
             break
         case 's':
+        case "ArrowDown":
             keys.s.pressed = true
             lastKeyws = 's'
             lastKey = 's'
             break
         case 'd':
+        case "ArrowRight":
             keys.d.pressed = true
             lastKeyad = 'd'
             lastKey = 'd'
@@ -430,4 +441,5 @@ addEventListener('keydown',({key})=>{
 
     }
 })
+
 
