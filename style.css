@@ -32,12 +32,15 @@ span {
     body{
         overflow-y: unset;
     }
+    span{
+        margin-top: 95vw;
+        font-size: 5vw;
+    }
 }
 
 @media (min-width: 1900px){
     canvas{
         width:1900px;
-        margin-left:28%;
     }
 }
 
