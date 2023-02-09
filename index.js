@@ -49,11 +49,12 @@ class Ghost {
       this.radius=16
       this.prevCollisions = []
       this.speed = 2
+      this.scared = false
   }
   draw(){
       c.beginPath()
       c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
-      c.fillStyle='grey'
+      c.fillStyle = this.scared ? 'white' : 'grey'
       c.fill()
       c.closePath()
   }
@@ -78,8 +79,23 @@ class Palet {
     }
 }
 
+class Powerup {
+  constructor({position}){
+      this.position=position
+      this.radius=8
+  }
+  draw(){
+      c.beginPath()
+      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
+      c.fillStyle='white'
+      c.fill()
+      c.closePath()
+  }
+}
+
 const palets = []
 const boundaries = []
+const powerups = []
 const ghosts = [
   new Ghost({
     position: 
@@ -134,7 +150,7 @@ let score = 0
 
 const map = [
     ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
-    ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+    ['|', ' ', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
     ['|', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '^', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '|'],
     ['|', '.', '.', '.', '.', '_', '.', '.', '.', '.', '|', '.', '.', '.', '.', '_', '.', '.', '.', '.', '|'],
     ['|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|'],
@@ -152,7 +168,7 @@ const map = [
     ['|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|', '.', '[', ']', '.', '.', '.', '[', ']', '.', '|'],
     ['|', '.', '.', '.', '.', '^', '.', '.', '.', '.', '|', '.', '.', '.', '.', '^', '.', '.', '.', '.', '|'],
     ['|', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '_', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '|'],
-    ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+    ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'p', '|'],
     ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
 ]
 
@@ -351,6 +367,16 @@ map.forEach((row, i) => {
             })
           )
           break
+        case 'p':
+          powerups.push(
+            new Powerup({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
       }
     })
   })
@@ -436,7 +462,38 @@ function animate() {
                 break
         }
     }
-    for (let i = palets.length-1; 0 < i; i--) {
+
+    for (let i = ghosts.length-1; 0 <= i; i--) {
+      const ghost = ghosts[i]
+      if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
+        if (ghost.scared) {
+          ghosts.splice(i,1)
+          score += 5
+            if (score < 10)
+              scoreEl.innerHTML='SCORE: 000'+ score
+            else if (score < 100)
+              scoreEl.innerHTML='SCORE: 00'+ score
+            else if (score < 1000)
+              scoreEl.innerHTML='SCORE: 0'+ score
+            else scoreEl.innerHTML='SCORE: '+ score
+        } else {cancelAnimationFrame(animationId)}  
+    }}
+
+    for (let i = powerups.length-1; 0 <= i; i--) {
+      const powerup = powerups[i]
+      powerup.draw()
+      if (Math.hypot(powerup.position.x - player.position.x, powerup.position.y - player.position.y) < powerup.radius + player.radius) {
+        powerups.splice(i,1)
+        ghosts.forEach(ghost => {
+          ghost.scared = true
+          setTimeout(() => {
+            ghost.scared = false
+          }, 5000)
+        })
+      }
+    }
+
+    for (let i = palets.length-1; 0 <= i; i--) {
         const palet = palets[i]
         palet.draw()
 
@@ -467,10 +524,6 @@ function animate() {
     
     ghosts.forEach(ghost => {
       ghost.update()
-
-      if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
-        cancelAnimationFrame(animationId)
-      }
 
       const collisions = []
       boundaries.forEach(boundary => {
