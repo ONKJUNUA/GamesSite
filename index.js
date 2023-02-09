@@ -1,6 +1,8 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+const scoreEl = document.querySelector('#scoreEl')
+
 canvas.width = screen.width
 canvas.height = screen.height
 
@@ -23,7 +25,7 @@ class Player {
     constructor({position,velocity}){
         this.position=position
         this.velocity=velocity
-        this.radius=15
+        this.radius=16
     }
     draw(){
         c.beginPath()
@@ -42,7 +44,7 @@ class Player {
 class Palet {
     constructor({position}){
         this.position=position
-        this.radius=3
+        this.radius=4
     }
     draw(){
         c.beginPath()
@@ -84,6 +86,8 @@ const keys = {
 let lastKey = ''
 let lastKeyws = ''
 let lastKeyad = ''
+
+let score = 0
 
 const map = [
     ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
@@ -369,7 +373,8 @@ function animate() {
             }
         }
         
-    } 
+    }
+    
     if (player.velocity.x!=0 && player.velocity.y!=0){
         switch(lastKey){
             case 'w':
@@ -392,6 +397,14 @@ function animate() {
 
         if (Math.hypot(palet.position.x - player.position.x, palet.position.y - player.position.y) < palet.radius + player.radius){
             palets.splice(i,1)
+            score += 1
+            if (score < 10)
+              scoreEl.innerHTML='SCORE: 000'+ score
+            else if (score < 100)
+              scoreEl.innerHTML='SCORE: 00'+ score
+            else if (score < 1000)
+              scoreEl.innerHTML='SCORE: 0'+ score
+            else scoreEl.innerHTML='SCORE: '+ score
         }
     }
    
@@ -438,8 +451,5 @@ addEventListener('keydown',({key})=>{
             lastKeyad = 'd'
             lastKey = 'd'
             break
-
     }
 })
-
-
