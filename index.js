@@ -26,18 +26,32 @@ class Player {
         this.position=position
         this.velocity=velocity
         this.radius=16
+        this.radians = 0.75
+        this.openRate = 0.1
+        this.rotation = 0
     }
     draw(){
+        c.save()
+        c.translate(this.position.x,this.position.y)
+        c.rotate(this.rotation)
+        c.translate(-this.position.x,-this.position.y)
         c.beginPath()
-        c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
+        c.arc(this.position.x,this.position.y,this.radius,this.radians,Math.PI*2- this.radians)
+        c.lineTo(this.position.x, this.position.y)
         c.fillStyle='white'
         c.fill()
         c.closePath()
+        c.restore()
     }
     update(){
         this.draw()
         this.position.x+=this.velocity.x
         this.position.y+=this.velocity.y
+
+        if (this.radians < 0 || this.radians > 0.75) {
+          this.openRate = -this.openRate
+        }
+        this.radians += this.openRate
     }
 }
 
@@ -396,6 +410,10 @@ function animate() {
     animationId = requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width,canvas.height)
     
+    if (palets.length===0) {
+      cancelAnimationFrame(animationId)
+    }
+
     if (keys.w.pressed && lastKeyws === 'w') {
         for (let i =0; i<boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -463,6 +481,20 @@ function animate() {
         }
     }
 
+    for (let i = powerups.length-1; 0 <= i; i--) {
+      const powerup = powerups[i]
+      powerup.draw()
+      if (Math.hypot(powerup.position.x - player.position.x, powerup.position.y - player.position.y) < powerup.radius + player.radius) {
+        powerups.splice(i,1)
+        ghosts.forEach(ghost => {
+          ghost.scared = true
+          setTimeout(() => {
+            ghost.scared = false
+          }, 5000)
+        })
+      }
+    }
+
     for (let i = ghosts.length-1; 0 <= i; i--) {
       const ghost = ghosts[i]
       if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
@@ -478,24 +510,6 @@ function animate() {
             else scoreEl.innerHTML='SCORE: '+ score
         } else {cancelAnimationFrame(animationId)}  
     }}
-
-    if (palets.length===0) {
-      cancelAnimationFrame(animationId)
-    }
-
-    for (let i = powerups.length-1; 0 <= i; i--) {
-      const powerup = powerups[i]
-      powerup.draw()
-      if (Math.hypot(powerup.position.x - player.position.x, powerup.position.y - player.position.y) < powerup.radius + player.radius) {
-        powerups.splice(i,1)
-        ghosts.forEach(ghost => {
-          ghost.scared = true
-          setTimeout(() => {
-            ghost.scared = false
-          }, 5000)
-        })
-      }
-    }
 
     for (let i = palets.length-1; 0 <= i; i--) {
         const palet = palets[i]
@@ -573,6 +587,10 @@ function animate() {
         ghost.prevCollisions = []
       }
     })
+    if (player.velocity.x > 0) player.rotation = 0
+    else if (player.velocity.x < 0) player.rotation = Math.PI
+    else if (player.velocity.y > 0) player.rotation = Math.PI/2
+    else if (player.velocity.y < 0) player.rotation = Math.PI*1.5
 }
 
 animate()
