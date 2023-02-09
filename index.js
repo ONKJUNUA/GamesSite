@@ -26,7 +26,7 @@ class Player {
         this.position=position
         this.velocity=velocity
         this.radius=16
-        this.radians = 0.75
+        this.radians = 1
         this.openRate = 0.1
         this.rotation = 0
     }
@@ -48,7 +48,7 @@ class Player {
         this.position.x+=this.velocity.x
         this.position.y+=this.velocity.y
 
-        if (this.radians < 0 || this.radians > 0.75) {
+        if (this.radians < 0 || this.radians > 1) {
           this.openRate = -this.openRate
         }
         this.radians += this.openRate
