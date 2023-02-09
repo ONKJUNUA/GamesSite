@@ -479,6 +479,10 @@ function animate() {
         } else {cancelAnimationFrame(animationId)}  
     }}
 
+    if (palets.length===0) {
+      cancelAnimationFrame(animationId)
+    }
+
     for (let i = powerups.length-1; 0 <= i; i--) {
       const powerup = powerups[i]
       powerup.draw()
