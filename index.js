@@ -38,7 +38,7 @@ class Player {
         c.beginPath()
         c.arc(this.position.x,this.position.y,this.radius,this.radians,Math.PI*2- this.radians)
         c.lineTo(this.position.x, this.position.y)
-        c.fillStyle='white'
+        c.fillStyle='#FFFFFF'
         c.fill()
         c.closePath()
         c.restore()
@@ -57,20 +57,40 @@ class Player {
 
 class Ghost {
   static speed = 2
-  constructor({position,velocity}){
+  constructor({position,velocity,eyesad,eyesws}){
       this.position=position
       this.velocity=velocity
-      this.radius=16
+      this.radius=14
       this.prevCollisions = []
       this.speed = 2
       this.scared = false
+      this.eyesws = 0
+      this.eyesad = 0
   }
   draw(){
+    c.save()
       c.beginPath()
-      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
-      c.fillStyle = this.scared ? 'white' : 'grey'
+      c.fillStyle = this.scared ? '#FFFFFF' : '#636363'
+      c.fillRect(this.position.x+this.radius,this.position.y-4,2*-this.radius,this.radius+4)
+      c.arc(this.position.x,this.position.y-3,this.radius,0,Math.PI, true)
       c.fill()
       c.closePath()
+      c.beginPath()
+      c.fillStyle = '#1b1b1b'
+      c.arc(this.position.x-6+this.eyesad,this.position.y-3+this.eyesws,4,0,Math.PI*2, true)
+      c.arc(this.position.x+6+this.eyesad,this.position.y-3+this.eyesws,4,0,Math.PI*2,true)
+      c.fill()
+      c.closePath()
+      c.beginPath()
+      c.fillStyle = '#1b1b1b'
+      c.arc(this.position.x-8,this.position.y+14,3,0,Math.PI, true)
+      c.arc(this.position.x,this.position.y+14,3,0,Math.PI, true)
+      c.arc(this.position.x+8,this.position.y+14,3,0,Math.PI,true)
+      c.arc(this.position.x-16,this.position.y+14,3,0,Math.PI, true)
+      c.arc(this.position.x+16,this.position.y+14,3,0,Math.PI,true)
+      c.fill()
+      c.closePath()
+    c.restore()
   }
   update(){
       this.draw()
@@ -87,7 +107,7 @@ class Palet {
     draw(){
         c.beginPath()
         c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
-        c.fillStyle='white'
+        c.fillStyle='#FFFFFF'
         c.fill()
         c.closePath()
     }
@@ -101,7 +121,7 @@ class Powerup {
   draw(){
       c.beginPath()
       c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
-      c.fillStyle='white'
+      c.fillStyle='#FFFFFF'
       c.fill()
       c.closePath()
   }
@@ -543,6 +563,22 @@ function animate() {
     ghosts.forEach(ghost => {
       ghost.update()
 
+      if (ghost.velocity.x > 0) 
+      {ghost.eyesws = 0 
+      ghost.eyesad = 2}
+
+      else if (ghost.velocity.x < 0) 
+      {ghost.eyesws = 0
+      ghost.eyesad = -2}
+
+      else if (ghost.velocity.y > 0) 
+      {ghost.eyesws = 2 
+      ghost.eyesad = 0}
+
+      else if (ghost.velocity.y < 0) 
+      {ghost.eyesws = -2 
+      ghost.eyesad = 0}
+
       const collisions = []
       boundaries.forEach(boundary => {
         if (!collisions.includes('right') && circleColliderWithRectangle({circle: {...ghost, velocity:{x:ghost.speed,y:0}}, rectangle: boundary})){
@@ -587,10 +623,11 @@ function animate() {
         ghost.prevCollisions = []
       }
     })
+    
     if (player.velocity.x > 0) player.rotation = 0
     else if (player.velocity.x < 0) player.rotation = Math.PI
     else if (player.velocity.y > 0) player.rotation = Math.PI/2
-    else if (player.velocity.y < 0) player.rotation = Math.PI*1.5
+    else if (player.velocity.y < 0) player.rotation = Math.PI*1.5    
 }
 
 animate()
