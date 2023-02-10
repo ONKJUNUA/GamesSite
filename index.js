@@ -2,6 +2,9 @@ const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
 const scoreEl = document.querySelector('#scoreEl')
+const timeEl = document.querySelector('#timeEl')
+const levelEl = document.querySelector('#levelEl')
+const livesEl = document.querySelector('#livesEl')
 
 canvas.width = screen.width
 canvas.height = screen.height
@@ -36,7 +39,7 @@ class Player {
         c.rotate(this.rotation)
         c.translate(-this.position.x,-this.position.y)
         c.beginPath()
-        c.arc(this.position.x,this.position.y,this.radius,this.radians,Math.PI*2- this.radians)
+        c.arc(this.position.x,this.position.y,this.radius,this.radians,Math.PI*2 - this.radians)
         c.lineTo(this.position.x, this.position.y)
         c.fillStyle='#FFFFFF'
         c.fill()
@@ -77,17 +80,15 @@ class Ghost {
       c.closePath()
       c.beginPath()
       c.fillStyle = '#1b1b1b'
-      c.arc(this.position.x-6+this.eyesad,this.position.y-3+this.eyesws,4,0,Math.PI*2, true)
+      c.arc(this.position.x-6+this.eyesad,this.position.y-3+this.eyesws,4,0,Math.PI*2,true)
       c.arc(this.position.x+6+this.eyesad,this.position.y-3+this.eyesws,4,0,Math.PI*2,true)
       c.fill()
       c.closePath()
       c.beginPath()
       c.fillStyle = '#1b1b1b'
-      c.arc(this.position.x-8,this.position.y+14,3,0,Math.PI, true)
-      c.arc(this.position.x,this.position.y+14,3,0,Math.PI, true)
-      c.arc(this.position.x+8,this.position.y+14,3,0,Math.PI,true)
-      c.arc(this.position.x-16,this.position.y+14,3,0,Math.PI, true)
-      c.arc(this.position.x+16,this.position.y+14,3,0,Math.PI,true)
+      c.arc(this.position.x-9,this.position.y+14,3,0,Math.PI,true)
+      c.arc(this.position.x,this.position.y+14,3,0,Math.PI,true)
+      c.arc(this.position.x+9,this.position.y+14,3,0,Math.PI,true)
       c.fill()
       c.closePath()
     c.restore()
@@ -181,6 +182,10 @@ let lastKeyws = ''
 let lastKeyad = ''
 
 let score = 0
+let time = 100000
+let lives = 3
+
+setTimeout(() => {cancelAnimationFrame(animationId)}, time)
 
 const map = [
     ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
@@ -431,7 +436,18 @@ function animate() {
     c.clearRect(0,0,canvas.width,canvas.height)
     
     if (palets.length===0) {
-      cancelAnimationFrame(animationId)
+      score+=time/1000
+      time = 0
+      timeEl.innerHTML= '<br>' + 'TIME: '+ time
+      score+=lives*50
+      lives = 0
+      livesEl.innerHTML= '<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
+
+      if (score < 10) scoreEl.innerHTML='SCORE: 000'+ score
+      else if (score < 100) scoreEl.innerHTML='SCORE: 00'+ score
+      else if (score < 1000) scoreEl.innerHTML='SCORE: 0'+ score
+      else scoreEl.innerHTML='SCORE: '+ score
+      setTimeout(() => {cancelAnimationFrame(animationId)}, 1000)
     }
 
     if (keys.w.pressed && lastKeyws === 'w') {
@@ -506,6 +522,14 @@ function animate() {
       powerup.draw()
       if (Math.hypot(powerup.position.x - player.position.x, powerup.position.y - player.position.y) < powerup.radius + player.radius) {
         powerups.splice(i,1)
+        score += 10
+            if (score < 10)
+              scoreEl.innerHTML='SCORE: 000'+ score
+            else if (score < 100)
+              scoreEl.innerHTML='SCORE: 00'+ score
+            else if (score < 1000)
+              scoreEl.innerHTML='SCORE: 0'+ score
+            else scoreEl.innerHTML='SCORE: '+ score
         ghosts.forEach(ghost => {
           ghost.scared = true
           setTimeout(() => {
@@ -520,7 +544,7 @@ function animate() {
       if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
         if (ghost.scared) {
           ghosts.splice(i,1)
-          score += 5
+          score += 10
             if (score < 10)
               scoreEl.innerHTML='SCORE: 000'+ score
             else if (score < 100)
@@ -528,7 +552,14 @@ function animate() {
             else if (score < 1000)
               scoreEl.innerHTML='SCORE: 0'+ score
             else scoreEl.innerHTML='SCORE: '+ score
-        } else {cancelAnimationFrame(animationId)}  
+        }else {
+          if (lives) {
+            lives-=1
+            livesEl.innerHTML='<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
+            player.position.x = Boundary.width + Boundary.width/2
+            player.position.y = Boundary.height + Boundary.height/2
+          }
+          else cancelAnimationFrame(animationId)}  
     }}
 
     for (let i = palets.length-1; 0 <= i; i--) {
@@ -627,7 +658,17 @@ function animate() {
     if (player.velocity.x > 0) player.rotation = 0
     else if (player.velocity.x < 0) player.rotation = Math.PI
     else if (player.velocity.y > 0) player.rotation = Math.PI/2
-    else if (player.velocity.y < 0) player.rotation = Math.PI*1.5    
+    else if (player.velocity.y < 0) player.rotation = Math.PI*1.5
+    
+    if (animationId%60===0 && time > 0){
+      time -= 1000
+      if (time/1000>100)
+      timeEl.innerHTML='<br>'+'TIME: '+ time/1000
+      else if (time/1000>10)
+      timeEl.innerHTML='<br>'+'TIME: 0'+ time/1000
+      else
+      timeEl.innerHTML='<br>'+'TIME: 00'+ time/1000
+    }  
 }
 
 animate()
