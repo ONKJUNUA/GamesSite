@@ -23,6 +23,15 @@ span {
 .reverse {
     left: 80%;
 }
+.mid{
+    font-size: 6vw;
+    left: 38%;
+    margin-top: 17vw;
+    display: block;
+}
+.hide{
+    display: none;
+}
 
 .title{
     width: 400px;

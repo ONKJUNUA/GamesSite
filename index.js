@@ -6,6 +6,8 @@ const timeEl = document.querySelector('#timeEl')
 const levelEl = document.querySelector('#levelEl')
 const livesEl = document.querySelector('#livesEl')
 
+const levelMid = document.querySelector('#levelMid')
+
 canvas.width = screen.width
 canvas.height = screen.height
 
@@ -134,7 +136,6 @@ class Powerup {
 
 const palets = []
 const boundaries = []
-const fake_boundaries = []
 const powerups = []
 const ghosts = [
     new Ghost({
@@ -190,11 +191,12 @@ let score = 0
 let time = 100000
 let lives = 3
 let level = 1
-let time_level=1
+let time_level = 1
+let fake_value = false
 
 function Level_Time(){
   setTimeout(() => {
-    if (level!==time_level){
+    if (level>time_level){
       time_level+=1
     }
     else cancelAnimationFrame(animationId)
@@ -507,7 +509,7 @@ function animate() {
     if (palets.length===0) {
       score+=time/1000
       time = 0
-      timeEl.innerHTML= '<br>' + 'TIME: 00'+ time
+      timeEl.innerHTML= '<br>' + 'TIME: 00'+ time/1000
       score+=lives*50
       lives = 0
       livesEl.innerHTML= '<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
@@ -516,47 +518,57 @@ function animate() {
       else if (score < 100) scoreEl.innerHTML='SCORE: 00'+ score
       else if (score < 1000) scoreEl.innerHTML='SCORE: 0'+ score
       else scoreEl.innerHTML='SCORE: '+ score
-      
+
       ghosts.splice(0,1)
       player.black = true
-      boundaries.splice(0,1)
-      if (boundaries.length===0){
-        time=100000
-        timeEl.innerHTML= '<br>' + 'TIME: '+ time
+      if (boundaries.length!==0) {
+        boundaries.splice(0,3)
+        fake_value=true
+      }
+      else if (fake_value===true) {
         lives=3
         livesEl.innerHTML= '<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
-        level+=1
-        levelEl.innerHTML='LEVEL: 0'+ level
-        map_creation(level)
-        ghosts.push (
-          new Ghost({
-            position: 
-            {x:Boundary.width * 19 + Boundary.width/2,
-            y:Boundary.height + Boundary.height/2},
-            velocity: {x:-Ghost.speed,y:0}
-          }),
-          new Ghost({
-            position: 
-            {x:Boundary.width * 19 + Boundary.width/2,
-            y:Boundary.height * 19 + Boundary.height/2},
-            velocity: {x:-Ghost.speed,y:0}
-          }),
-          new Ghost({
-            position: 
-            {x:Boundary.width + Boundary.width/2,
-            y:Boundary.height * 19 + Boundary.height/2},
-            velocity: {x:Ghost.speed,y:0}
-          })
-              )
-          player.position.x = Boundary.width + Boundary.width/2
-          player.position.y = Boundary.height + Boundary.height/2
-          player.rotation = 0
-          lastKeyws = ''
-          lastKeyad = ''
-          player.velocity.x = 0
-          player.velocity.y = 0
-          player.black = false
-        Level_Time()
+        level+=1  
+        if (level>=10) levelEl.innerHTML='LEVEL: '+ level
+        else levelEl.innerHTML='LEVEL: 0'+ level
+        levelMid.innerHTML='LEVEL '+ level
+        levelMid.setAttribute("class", "mid")
+        setTimeout(() => {
+          time=100000
+          timeEl.innerHTML= '<br>' + 'TIME: '+ time/1000
+          map_creation(level)
+          ghosts.push (
+            new Ghost({
+              position: 
+              {x:Boundary.width * 19 + Boundary.width/2,
+              y:Boundary.height + Boundary.height/2},
+              velocity: {x:-Ghost.speed,y:0}
+            }),
+            new Ghost({
+              position: 
+              {x:Boundary.width * 19 + Boundary.width/2,
+              y:Boundary.height * 19 + Boundary.height/2},
+              velocity: {x:-Ghost.speed,y:0}
+            }),
+            new Ghost({
+              position: 
+              {x:Boundary.width + Boundary.width/2,
+              y:Boundary.height * 19 + Boundary.height/2},
+              velocity: {x:Ghost.speed,y:0}
+            })
+                )
+            player.position.x = Boundary.width + Boundary.width/2
+            player.position.y = Boundary.height + Boundary.height/2
+            player.rotation = 0
+            lastKeyws = ''
+            lastKeyad = ''
+            player.velocity.x = 0
+            player.velocity.y = 0
+            player.black = false
+            Level_Time()
+            levelMid.setAttribute("class", "hide")
+        }, 1000)
+        fake_value=false
       }
     }
 
