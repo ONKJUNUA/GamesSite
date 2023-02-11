@@ -238,13 +238,15 @@ const map2 = [
   ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
 ]
 
+const map_holder = [map, map2]
+
 function createImage(src) {
     const image=new Image()
     image.src=src
     return image
 }
-
-map.forEach((row, i) => {
+function map_creation(){
+map_holder[1].forEach((row, i) => {
     row.forEach((symbol, j) => {
       switch (symbol) {
         case '-':
@@ -446,6 +448,9 @@ map.forEach((row, i) => {
       }
     })
   })
+}
+
+map_creation()
 
 function circleColliderWithRectangle({circle, rectangle}){
   const padding = Boundary.width/2 - circle.radius - 1
@@ -474,7 +479,8 @@ function animate() {
       else if (score < 100) scoreEl.innerHTML='SCORE: 00'+ score
       else if (score < 1000) scoreEl.innerHTML='SCORE: 0'+ score
       else scoreEl.innerHTML='SCORE: '+ score
-      setTimeout(() => {cancelAnimationFrame(animationId)}, 1000)
+      boundaries.splice(0,1)
+      map_creation()
     }
 
     if (keys.w.pressed && lastKeyws === 'w') {
