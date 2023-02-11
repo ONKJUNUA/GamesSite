@@ -28,12 +28,13 @@ class Player {
     constructor({position,velocity}){
         this.position=position
         this.velocity=velocity
-        this.radius=16
+        this.radius= 16
         this.radians = 1
         this.openRate = 0.1
         this.rotation = 0
         this.invincible = false
         this.invincible_points = false
+        this.black = false
     }
     draw(){
         c.save()
@@ -43,7 +44,7 @@ class Player {
         c.beginPath()
         c.arc(this.position.x,this.position.y,this.radius,this.radians,Math.PI*2 - this.radians)
         c.lineTo(this.position.x, this.position.y)
-        c.fillStyle = this.invincible ? '#808080' : '#FFFFFF'
+        c.fillStyle = this.black ? '#1b1b1b' : this.invincible ? '#808080' : '#FFFFFF'
         c.fill()
         c.closePath()
         c.restore()
@@ -133,38 +134,39 @@ class Powerup {
 
 const palets = []
 const boundaries = []
+const fake_boundaries = []
 const powerups = []
 const ghosts = [
-  new Ghost({
-    position: 
-    {x:Boundary.width * 19 + Boundary.width/2,
-    y:Boundary.height + Boundary.height/2},
-    velocity: {x:-Ghost.speed,y:0}
-  }),
-  new Ghost({
-    position: 
-    {x:Boundary.width * 19 + Boundary.width/2,
-    y:Boundary.height * 19 + Boundary.height/2},
-    velocity: {x:-Ghost.speed,y:0}
-  }),
-  new Ghost({
-    position: 
-    {x:Boundary.width + Boundary.width/2,
-    y:Boundary.height * 19 + Boundary.height/2},
-    velocity: {x:Ghost.speed,y:0}
-  })
-]
-const player = new Player({
-    position: {
-        x:Boundary.width + Boundary.width/2,
-        y:Boundary.height + Boundary.height/2
-    },
-    velocity: {
-        x:0,
-        y:0
-    }
-})
+    new Ghost({
+      position: 
+      {x:Boundary.width * 19 + Boundary.width/2,
+      y:Boundary.height + Boundary.height/2},
+      velocity: {x:-Ghost.speed,y:0}
+    }),
+    new Ghost({
+      position: 
+      {x:Boundary.width * 19 + Boundary.width/2,
+      y:Boundary.height * 19 + Boundary.height/2},
+      velocity: {x:-Ghost.speed,y:0}
+    }),
+    new Ghost({
+      position: 
+      {x:Boundary.width + Boundary.width/2,
+      y:Boundary.height * 19 + Boundary.height/2},
+      velocity: {x:Ghost.speed,y:0}
+    })
+  ]
 
+const player = new Player({
+      position: {
+          x:Boundary.width + Boundary.width/2,
+          y:Boundary.height + Boundary.height/2
+      },
+      velocity: {
+          x:0,
+          y:0
+      }
+  })
 const keys = {
     w:{
         pressed:false
@@ -187,10 +189,21 @@ let lastKeyad = ''
 let score = 0
 let time = 100000
 let lives = 3
+let level = 1
+let time_level=1
 
-setTimeout(() => {cancelAnimationFrame(animationId)}, time)
+function Level_Time(){
+  setTimeout(() => {
+    if (level!==time_level){
+      time_level+=1
+    }
+    else cancelAnimationFrame(animationId)
+  }, time)
+}
 
-const map = [
+Level_Time()
+
+const map1 = [
     ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
     ['|', ' ', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
     ['|', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '^', '.', 'b', '.', '[', '7', ']', '.', 'b', '.', '|'],
@@ -238,15 +251,39 @@ const map2 = [
   ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
 ]
 
-const map_holder = [map, map2]
+const map3 = [
+  ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
+  ['|', ' ', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+  ['|', '.', '1', '-', '-', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '-', '-', '2', '.', '|'],
+  ['|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '1', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '2', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '1', '-', '-', ']', '.', '[', '-', '-', '2', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '1', ']', '.', '[', '2', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '_', '.', '_', '.', '_', '.', '_', '.', '.', '.', '_', '.', '_', '.', '_', '.', '_', '.', '|'],
+  ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'b', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+  ['|', '.', '^', '.', '^', '.', '^', '.', '^', '.', 'p', '.', '^', '.', '^', '.', '^', '.', '^', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '4', ']', '.', '[', '3', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '4', '-', '-', ']', '.', '[', '-', '-', '3', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '4', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '3', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|'],
+  ['|', '.', '4', '-', '-', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '-', '-', '3', '.', '|'],
+  ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+  ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
+]
+
+const map_holder = [map1, map2, map3]
 
 function createImage(src) {
     const image=new Image()
     image.src=src
     return image
 }
-function map_creation(){
-map_holder[1].forEach((row, i) => {
+function map_creation(level){
+map_holder[level-1].forEach((row, i) => {
     row.forEach((symbol, j) => {
       switch (symbol) {
         case '-':
@@ -450,7 +487,7 @@ map_holder[1].forEach((row, i) => {
   })
 }
 
-map_creation()
+map_creation(level)
 
 function circleColliderWithRectangle({circle, rectangle}){
   const padding = Boundary.width/2 - circle.radius - 1
@@ -470,7 +507,7 @@ function animate() {
     if (palets.length===0) {
       score+=time/1000
       time = 0
-      timeEl.innerHTML= '<br>' + 'TIME: '+ time
+      timeEl.innerHTML= '<br>' + 'TIME: 00'+ time
       score+=lives*50
       lives = 0
       livesEl.innerHTML= '<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
@@ -479,8 +516,48 @@ function animate() {
       else if (score < 100) scoreEl.innerHTML='SCORE: 00'+ score
       else if (score < 1000) scoreEl.innerHTML='SCORE: 0'+ score
       else scoreEl.innerHTML='SCORE: '+ score
+      
+      ghosts.splice(0,1)
+      player.black = true
       boundaries.splice(0,1)
-      map_creation()
+      if (boundaries.length===0){
+        time=100000
+        timeEl.innerHTML= '<br>' + 'TIME: '+ time
+        lives=3
+        livesEl.innerHTML= '<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
+        level+=1
+        levelEl.innerHTML='LEVEL: 0'+ level
+        map_creation(level)
+        ghosts.push (
+          new Ghost({
+            position: 
+            {x:Boundary.width * 19 + Boundary.width/2,
+            y:Boundary.height + Boundary.height/2},
+            velocity: {x:-Ghost.speed,y:0}
+          }),
+          new Ghost({
+            position: 
+            {x:Boundary.width * 19 + Boundary.width/2,
+            y:Boundary.height * 19 + Boundary.height/2},
+            velocity: {x:-Ghost.speed,y:0}
+          }),
+          new Ghost({
+            position: 
+            {x:Boundary.width + Boundary.width/2,
+            y:Boundary.height * 19 + Boundary.height/2},
+            velocity: {x:Ghost.speed,y:0}
+          })
+              )
+          player.position.x = Boundary.width + Boundary.width/2
+          player.position.y = Boundary.height + Boundary.height/2
+          player.rotation = 0
+          lastKeyws = ''
+          lastKeyad = ''
+          player.velocity.x = 0
+          player.velocity.y = 0
+          player.black = false
+        Level_Time()
+      }
     }
 
     if (keys.w.pressed && lastKeyws === 'w') {
