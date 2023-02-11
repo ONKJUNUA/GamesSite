@@ -32,6 +32,7 @@ class Player {
         this.radians = 1
         this.openRate = 0.1
         this.rotation = 0
+        this.invincible = false
     }
     draw(){
         c.save()
@@ -41,7 +42,7 @@ class Player {
         c.beginPath()
         c.arc(this.position.x,this.position.y,this.radius,this.radians,Math.PI*2 - this.radians)
         c.lineTo(this.position.x, this.position.y)
-        c.fillStyle='#FFFFFF'
+        c.fillStyle = this.invincible ? '#808080' : '#FFFFFF'
         c.fill()
         c.closePath()
         c.restore()
@@ -67,6 +68,7 @@ class Ghost {
       this.prevCollisions = []
       this.speed = 2
       this.scared = false
+      this.scared_points = false
       this.eyesws = 0
       this.eyesad = 0
   }
@@ -531,10 +533,30 @@ function animate() {
               scoreEl.innerHTML='SCORE: 0'+ score
             else scoreEl.innerHTML='SCORE: '+ score
         ghosts.forEach(ghost => {
+          ghost.scared_points = true
           ghost.scared = true
           setTimeout(() => {
             ghost.scared = false
-          }, 5000)
+            setTimeout(() => {
+              ghost.scared = true
+              setTimeout(() => {
+                ghost.scared = false
+                setTimeout(() => {
+                  ghost.scared = true
+                  setTimeout(() => {
+                    ghost.scared = false
+                    setTimeout(() => {
+                      ghost.scared = true
+                      setTimeout(() => {
+                        ghost.scared_points = false
+                        ghost.scared = false
+                      }, 250)
+                    }, 250)
+                  }, 250)
+                }, 250)
+              }, 250)
+            }, 250)
+          }, 3500)
         })
       }
     }
@@ -542,7 +564,7 @@ function animate() {
     for (let i = ghosts.length-1; 0 <= i; i--) {
       const ghost = ghosts[i]
       if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
-        if (ghost.scared) {
+        if (ghost.scared_points) {
           ghosts.splice(i,1)
           score += 10
             if (score < 10)
@@ -554,6 +576,10 @@ function animate() {
             else scoreEl.innerHTML='SCORE: '+ score
         }else {
           if (lives) {
+            player.invincible = true
+            setTimeout(() => {
+              player.invincible = false
+            }, 3000)
             lives-=1
             livesEl.innerHTML='<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
             player.position.x = Boundary.width + Boundary.width/2
