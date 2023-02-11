@@ -73,7 +73,7 @@ class Ghost {
   draw(){
     c.save()
       c.beginPath()
-      c.fillStyle = this.scared ? '#FFFFFF' : '#636363'
+      c.fillStyle = this.scared ? '#FFFFFF' : '#808080'
       c.fillRect(this.position.x+this.radius,this.position.y-4,2*-this.radius,this.radius+4)
       c.arc(this.position.x,this.position.y-3,this.radius,0,Math.PI, true)
       c.fill()
@@ -558,6 +558,11 @@ function animate() {
             livesEl.innerHTML='<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
             player.position.x = Boundary.width + Boundary.width/2
             player.position.y = Boundary.height + Boundary.height/2
+            player.rotation = 0
+            lastKeyws = ''
+            lastKeyad = ''
+            player.velocity.x = 0
+            player.velocity.y = 0
           }
           else cancelAnimationFrame(animationId)}  
     }}
