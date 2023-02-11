@@ -33,6 +33,7 @@ class Player {
         this.openRate = 0.1
         this.rotation = 0
         this.invincible = false
+        this.invincible_points = false
     }
     draw(){
         c.save()
@@ -211,6 +212,30 @@ const map = [
     ['|', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '_', '.', 'b', '.', '[', '5', ']', '.', 'b', '.', '|'],
     ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'p', '|'],
     ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
+]
+
+const map2 = [
+  ['1', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '2'],
+  ['|', ' ', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+  ['|', '.', '1', '-', '-', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '-', '-', '2', '.', '|'],
+  ['|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '1', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '2', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '1', '-', '-', ']', '.', '[', '-', '-', '2', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '1', ']', '.', '[', '2', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '_', '.', '_', '.', '_', '.', '_', '.', '.', '.', '_', '.', '_', '.', '_', '.', '_', '.', '|'],
+  ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'b', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+  ['|', '.', '^', '.', '^', '.', '^', '.', '^', '.', 'p', '.', '^', '.', '^', '.', '^', '.', '^', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '4', ']', '.', '[', '3', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '4', '-', '-', ']', '.', '[', '-', '-', '3', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '4', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '3', '.', '|', '.', '|'],
+  ['|', '.', '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', '.', '|'],
+  ['|', '.', '4', '-', '-', '-', '-', '-', '-', ']', '.', '[', '-', '-', '-', '-', '-', '-', '3', '.', '|'],
+  ['|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|'],
+  ['4', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '3']
 ]
 
 function createImage(src) {
@@ -560,38 +585,58 @@ function animate() {
         })
       }
     }
-
-    for (let i = ghosts.length-1; 0 <= i; i--) {
-      const ghost = ghosts[i]
-      if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
-        if (ghost.scared_points) {
-          ghosts.splice(i,1)
-          score += 10
-            if (score < 10)
-              scoreEl.innerHTML='SCORE: 000'+ score
-            else if (score < 100)
-              scoreEl.innerHTML='SCORE: 00'+ score
-            else if (score < 1000)
-              scoreEl.innerHTML='SCORE: 0'+ score
-            else scoreEl.innerHTML='SCORE: '+ score
-        }else {
-          if (lives) {
-            player.invincible = true
-            setTimeout(() => {
-              player.invincible = false
-            }, 3000)
-            lives-=1
-            livesEl.innerHTML='<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
-            player.position.x = Boundary.width + Boundary.width/2
-            player.position.y = Boundary.height + Boundary.height/2
-            player.rotation = 0
-            lastKeyws = ''
-            lastKeyad = ''
-            player.velocity.x = 0
-            player.velocity.y = 0
-          }
-          else cancelAnimationFrame(animationId)}  
-    }}
+    if (!player.invincible_points) {
+      for (let i = ghosts.length-1; 0 <= i; i--) {
+        const ghost = ghosts[i]
+        if (Math.hypot(ghost.position.x - player.position.x, ghost.position.y - player.position.y) < ghost.radius + player.radius){
+          if (ghost.scared_points) {
+            ghosts.splice(i,1)
+            score += 10
+              if (score < 10)
+                scoreEl.innerHTML='SCORE: 000'+ score
+              else if (score < 100)
+                scoreEl.innerHTML='SCORE: 00'+ score
+              else if (score < 1000)
+                scoreEl.innerHTML='SCORE: 0'+ score
+              else scoreEl.innerHTML='SCORE: '+ score
+          }else {
+            if (lives) {
+              player.invincible_points = true
+              player.invincible = true
+              setTimeout(() => {
+                player.invincible = false
+                setTimeout(() => {
+                  player.invincible = true
+                  setTimeout(() => {
+                    player.invincible = false
+                    setTimeout(() => {
+                      player.invincible = true
+                      setTimeout(() => {
+                        player.invincible = false
+                        setTimeout(() => {
+                          player.invincible = true
+                          setTimeout(() => {
+                            player.invincible_points = false
+                            player.invincible = false
+                          }, 250)
+                        }, 250)
+                      }, 250)
+                    }, 250)
+                  }, 250)
+                }, 250)
+              }, 500)
+              lives-=1
+              livesEl.innerHTML='<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
+              player.position.x = Boundary.width + Boundary.width/2
+              player.position.y = Boundary.height + Boundary.height/2
+              player.rotation = 0
+              lastKeyws = ''
+              lastKeyad = ''
+              player.velocity.x = 0
+              player.velocity.y = 0
+            }
+            else cancelAnimationFrame(animationId)}  
+    }}}
 
     for (let i = palets.length-1; 0 <= i; i--) {
         const palet = palets[i]
