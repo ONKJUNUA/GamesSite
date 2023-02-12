@@ -9,6 +9,10 @@ const livesEl = document.querySelector('#livesEl')
 const levelMid = document.querySelector('#levelMid')
 const scoreMid = document.querySelector('#scoreMid')
 
+const startMid = document.querySelector('#startMid')
+const setMid = document.querySelector('#setMid')
+const credMid = document.querySelector('#credMid')
+
 canvas.width = screen.width
 canvas.height = screen.height
 
@@ -931,12 +935,23 @@ function animate() {
       timeEl.innerHTML='<br>'+'TIME: 00'+ time/1000
     }  
 }
-
-levelMid.setAttribute("class", "unselectable mid")
-setTimeout(() => {
-  animate()
-  levelMid.setAttribute("class", "unselectable hide")
-}, 1000)
+function start() {
+  startMid.setAttribute("class", "hide")
+  setMid.setAttribute("class", "hide")
+  credMid.setAttribute("class", "hide")
+  setTimeout(() => {
+    scoreEl.setAttribute("class", "unselectable")
+    timeEl.setAttribute("class", "unselectable")
+    levelEl.setAttribute("class", "reverse unselectable")
+    livesEl.setAttribute("class", "reverse unselectable")
+    levelMid.setAttribute("class", "unselectable mid")
+  setTimeout(() => {
+    animate()
+    levelMid.setAttribute("class", "unselectable hide")
+  }, 1500)
+  }, 500);
+  
+}
 
 addEventListener('keydown',({key})=>{
     switch(key){

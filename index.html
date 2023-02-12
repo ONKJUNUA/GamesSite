@@ -7,11 +7,15 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <p><img src="img/Title.png" class="title" draggable="false" (dragstart)="false"></p>
+
+    <button type="button" class="block" id="startMid" onclick="start()">START</button>
+    <button type="button" class="block br" id="setMid">SETTINGS</button>
+    <button type="button" class="block brr" id="credMid">CREDITS</button>
     
-    <span class="reverse unselectable" id="levelEl">LEVEL: 01</span>
-    <span class="unselectable" id="scoreEl">SCORE: 0000</span>
-    <span class="reverse unselectable" id="livesEl"><br>   LIVES: 3</span>
-    <span class="unselectable" id="timeEl"><br>TIME: 100</span>
+    <span class="hide" id="levelEl">LEVEL: 01</span>
+    <span class="hide" id="scoreEl">SCORE: 0000</span>
+    <span class="hide" id="livesEl"><br>   LIVES: 3</span>
+    <span class="hide" id="timeEl"><br>TIME: 100</span>
 
     <span class="unselectable hide" id="levelMid">LEVEL 1</span>
     <span class="unselectable hide" id="scoreMid"></span>
