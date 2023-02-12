@@ -30,13 +30,14 @@ class Player {
     constructor({position,velocity}){
         this.position=position
         this.velocity=velocity
-        this.radius= 16
+        this.radius= 15
         this.radians = 1
         this.openRate = 0.1
         this.rotation = 0
         this.invincible = false
         this.invincible_points = false
         this.black = false
+        this.speed = 5
     }
     draw(){
         c.save()
@@ -626,7 +627,7 @@ function animate() {
         if (level>=10) levelEl.innerHTML='LEVEL: '+ level
         else levelEl.innerHTML='LEVEL: 0'+ level
         levelMid.innerHTML='LEVEL '+ level
-        levelMid.setAttribute("class", "mid")
+        levelMid.setAttribute("class", "unselectable mid")
         setTimeout(() => {
           lives=3
           livesEl.innerHTML= '<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
@@ -662,7 +663,7 @@ function animate() {
             player.velocity.y = 0
             player.black = false
             Level_Time()
-            levelMid.setAttribute("class", "hide")
+            levelMid.setAttribute("class", "unselectable hide")
         }, 1000)
         fake_value=false
       }
@@ -676,7 +677,7 @@ function animate() {
                 player.velocity.y=0
                 break
             } else {
-                player.velocity.y=-5
+                player.velocity.y=-player.speed
             }
         }
 
@@ -688,7 +689,7 @@ function animate() {
                 player.velocity.x=0
                 break
             } else {
-                player.velocity.x=-5
+                player.velocity.x=-player.speed
             }
         }
 
@@ -700,7 +701,7 @@ function animate() {
                 player.velocity.y=0
                 break
             } else {
-                player.velocity.y=5
+                player.velocity.y=player.speed
             }
         }
 
@@ -712,7 +713,7 @@ function animate() {
                 player.velocity.x=0
                 break
             } else {
-                player.velocity.x=5
+                player.velocity.x=player.speed
             }
         }
         
