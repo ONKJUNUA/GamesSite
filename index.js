@@ -184,6 +184,16 @@ class Fastup {
       c.fillStyle='#FFFFFF'
       c.fill()
       c.closePath()
+      c.beginPath()
+      c.moveTo(this.position.x,this.position.y-1)
+      c.lineTo(this.position.x+5,this.position.y-7)
+      c.lineTo(this.position.x-5,this.position.y-7)
+      c.moveTo(this.position.x,this.position.y+1)
+      c.lineTo(this.position.x+5,this.position.y+7)
+      c.lineTo(this.position.x-5,this.position.y+7)
+      c.fillStyle='#1b1b1b'
+      c.fill()
+      c.closePath()
   }
 }
 
@@ -208,31 +218,45 @@ class Inviup {
   }
 }
 
-class KeyHor {
-  constructor({position}){
-      this.position=position
-      this.radius=8
-  }
-  draw(){
-      c.beginPath()
-      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI)
-      c.fillStyle='#FFFFFF'
-      c.fill()
-      c.closePath()
-  }
-}
-
 class KeyVer {
   constructor({position}){
       this.position=position
       this.radius=8
   }
   draw(){
-      c.beginPath()
-      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI)
-      c.fillStyle='#FFFFFF'
-      c.fill()
-      c.closePath()
+    c.beginPath()
+    c.fillStyle='#FFFFFF'
+    c.arc(this.position.x-6,this.position.y,this.radius,0,Math.PI*2)
+    c.fillRect(this.position.x-8,this.position.y-2,20,5)
+    c.fillRect(this.position.x+6,this.position.y-2,4,8)
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.arc(this.position.x-6,this.position.y,4,0,Math.PI*2)
+    c.fillStyle='#1b1b1b'
+    c.fill()
+    c.closePath()
+  }
+}
+
+class KeyHor {
+  constructor({position}){
+      this.position=position
+      this.radius=8
+  }
+  draw(){
+    c.beginPath()
+    c.fillStyle='#FFFFFF'
+    c.arc(this.position.x,this.position.y-6,this.radius,0,Math.PI*2)
+    c.fillRect(this.position.x-2,this.position.y-8,5,20)
+    c.fillRect(this.position.x-5,this.position.y+6,8,4)
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.arc(this.position.x,this.position.y-6,4,0,Math.PI*2)
+    c.fillStyle='#1b1b1b'
+    c.fill()
+    c.closePath()
   }
 }
 
@@ -297,9 +321,9 @@ let fake_value = false
 
 const map1 = [
 ['1','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','2'],
-['|',' ','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
-['|','.','b','.','[','7',']','.','b','.','^','.','1','-',']','.','[','-','2','.','|'],
-['|','.','.','.','.','_','.','.','.','.','|','.','|','.','.','.','.','.','|','.','|'],
+['|',' ','l','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
+['|','k','b','l','[','7',']','.','b','.','^','.','1','-',']','.','[','-','2','.','|'],
+['|','.','k','.','.','_','.','.','.','.','|','.','|','.','.','.','.','.','|','.','|'],
 ['|','.','[',']','.','.','.','[',']','.','|','.','_','.','b','.','b','.','_','.','|'],
 ['|','.','.','.','.','b','.','.','.','.','|','.','.','.','.','.','.','.','.','.','|'],
 ['|','.','[',']','.','.','.','[',']','.','|','.','^','.','b','.','b','.','^','.','|'],
