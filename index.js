@@ -263,6 +263,11 @@ class KeyHor {
 const palets = []
 const boundaries = []
 const powerups = []
+const heartups = []
+const fastups = []
+const inviups = []
+const keyhors = []
+const keyvers = []
 const ghosts = [
     new Ghost({
       position: 
@@ -1134,7 +1139,7 @@ map_holder[level-1].forEach((row, i) => {
           )
           break
         case 'h':
-          powerups.push(
+          heartups.push(
             new Heartup({
               position: {
                 x: j * Boundary.width + Boundary.width / 2,
@@ -1144,7 +1149,7 @@ map_holder[level-1].forEach((row, i) => {
           )
           break
         case 'f':
-          powerups.push(
+          fastups.push(
             new Fastup({
               position: {
                 x: j * Boundary.width + Boundary.width / 2,
@@ -1154,7 +1159,7 @@ map_holder[level-1].forEach((row, i) => {
           )
           break
         case 'i':
-          powerups.push(
+          inviups.push(
             new Inviup({
               position: {
                 x: j * Boundary.width + Boundary.width / 2,
@@ -1377,6 +1382,89 @@ function animate() {
         })
       }
     }
+
+for (let i = heartups.length-1; 0 <= i; i--) {
+      const heartup = heartups[i]
+      heartup.draw()
+      if (Math.hypot(heartup.position.x - player.position.x, heartup.position.y - player.position.y) < heartup.radius + player.radius) {
+        heartups.splice(i,1)
+        lives+=1
+        livesEl.innerHTML='<br>' + '\xa0\xa0\xa0' + 'LIVES: '+ lives
+        score += 10
+            if (score < 10)
+              scoreEl.innerHTML='SCORE: 000'+ score
+            else if (score < 100)
+              scoreEl.innerHTML='SCORE: 00'+ score
+            else if (score < 1000)
+              scoreEl.innerHTML='SCORE: 0'+ score
+            else scoreEl.innerHTML='SCORE: '+ score
+      }
+    }
+
+for (let i = inviups.length-1; 0 <= i; i--) {
+      const inviup = inviups[i]
+      inviup.draw()
+      if (Math.hypot(inviup.position.x - player.position.x, inviup.position.y - player.position.y) < inviup.radius + player.radius) {
+        inviups.splice(i,1)
+        score += 10
+            if (score < 10)
+              scoreEl.innerHTML='SCORE: 000'+ score
+            else if (score < 100)
+              scoreEl.innerHTML='SCORE: 00'+ score
+            else if (score < 1000)
+              scoreEl.innerHTML='SCORE: 0'+ score
+            else scoreEl.innerHTML='SCORE: '+ score
+          player.invincible_points = true
+              player.invincible = true
+              setTimeout(() => {
+                player.invincible = false
+                setTimeout(() => {
+                  player.invincible = true
+                  setTimeout(() => {
+                    player.invincible = false
+                    setTimeout(() => {
+                      player.invincible = true
+                      setTimeout(() => {
+                        player.invincible = false
+                        setTimeout(() => {
+                          player.invincible = true
+                          setTimeout(() => {
+                            player.invincible_points = false
+                            player.invincible = false
+                          }, 250)
+                        }, 250)
+                      }, 250)
+                    }, 250)
+                  }, 250)
+                }, 250)
+              }, 3500)
+      }
+    }
+
+    for (let i = fastups.length-1; 0 <= i; i--) {
+      const fastup = fastups[i]
+      fastup.draw()
+      if (Math.hypot(fastup.position.x - player.position.x, fastup.position.y - player.position.y) < fastup.radius + player.radius) {
+        
+        player.speed*=2
+        if (player.velocity.x===0) player.position.y -= 5
+        if (player.velocity.y===0) player.position.x -= 5
+        fastups.splice(i,1)
+        
+        score += 10
+            if (score < 10)
+              scoreEl.innerHTML='SCORE: 000'+ score
+            else if (score < 100)
+              scoreEl.innerHTML='SCORE: 00'+ score
+            else if (score < 1000)
+              scoreEl.innerHTML='SCORE: 0'+ score
+            else scoreEl.innerHTML='SCORE: '+ score
+            setTimeout(() => {
+              player.speed=5
+            }, 3000)
+      }
+    }
+
     if (!player.invincible_points) {
       for (let i = ghosts.length-1; 0 <= i; i--) {
         const ghost = ghosts[i]
