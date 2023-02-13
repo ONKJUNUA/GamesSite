@@ -129,11 +129,107 @@ class Palet {
 class Powerup {
   constructor({position}){
       this.position=position
+      this.radius=10
+  }
+  draw(){
+    c.beginPath()
+    c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
+    c.fillStyle='#FFFFFF'
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.arc(this.position.x,this.position.y,6,0,Math.PI*2)
+    c.fillStyle='#1b1b1b'
+    c.fill()
+    c.closePath()
+  }
+}
+
+class Heartup {
+  constructor({position}){
+      this.position=position
+      this.radius=6
+  }
+  draw(){
+      c.beginPath()
+      c.arc(this.position.x-5,this.position.y-3,this.radius,0,Math.PI*2,true)
+      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2,true)
+      c.arc(this.position.x+5,this.position.y-3,this.radius,0,Math.PI*2,true)
+      c.moveTo(this.position.x,this.position.y+11)
+      c.lineTo(this.position.x+10,this.position.y+1)
+      c.lineTo(this.position.x-10,this.position.y+1)
+      c.fillStyle='#FFFFFF'
+      c.fill()
+      c.closePath()
+  }
+}
+
+class Fastup {
+  constructor({position}){
+      this.position=position
+      this.radius=10
+  }
+  draw(){
+      c.beginPath()
+      c.moveTo(this.position.x,this.position.y-5)
+      c.lineTo(this.position.x+10,this.position.y+10)
+      c.lineTo(this.position.x-10,this.position.y+10)
+      c.fillStyle='#FFFFFF'
+      c.fill()
+      c.closePath()
+      c.beginPath()
+      c.moveTo(this.position.x,this.position.y+5)
+      c.lineTo(this.position.x+10,this.position.y-10)
+      c.lineTo(this.position.x-10,this.position.y-10)
+      c.fillStyle='#FFFFFF'
+      c.fill()
+      c.closePath()
+  }
+}
+
+class Inviup {
+  constructor({position}){
+      this.position=position
+      this.radius=12
+  }
+  draw(){
+    c.beginPath()
+      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
+      c.fillStyle='#1b1b1b'
+      c.fill()
+      c.closePath()
+      c.beginPath()
+      c.fillStyle='#FFFFFF'
+      c.fillRect(this.position.x-12,this.position.y-10,25,3)
+      c.fillRect(this.position.x-12,this.position.y-2,25,3)
+      c.fillRect(this.position.x-12,this.position.y+6,25,3)
+      c.fill()
+      c.closePath()
+  }
+}
+
+class KeyHor {
+  constructor({position}){
+      this.position=position
       this.radius=8
   }
   draw(){
       c.beginPath()
-      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2)
+      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI)
+      c.fillStyle='#FFFFFF'
+      c.fill()
+      c.closePath()
+  }
+}
+
+class KeyVer {
+  constructor({position}){
+      this.position=position
+      this.radius=8
+  }
+  draw(){
+      c.beginPath()
+      c.arc(this.position.x,this.position.y,this.radius,0,Math.PI)
       c.fillStyle='#FFFFFF'
       c.fill()
       c.closePath()
@@ -214,9 +310,9 @@ const map1 = [
 ['|','.','.','.','.','.','.','.','.','.','|','.','.','.','.','.','.','.','.','.','|'],
 ['|','.','b','.','^','.','^','.','b','.','|','.','b','.','^','.','^','.','b','.','|'],
 ['|','.','.','.','|','.','|','.','.','.','|','.','.','.','_','.','_','.','.','.','|'],
-['|','.','[','-','3','.','4','-',']','.','|','.','^','.','.','.','.','.','^','.','|'],
-['|','.','.','.','.','p','.','.','.','.','|','.','6',']','.','b','.','[','8','.','|'],
-['|','.','[','-','2','.','1','-',']','.','|','.','_','.','.','.','.','.','_','.','|'],
+['|','.','[','-','3','p','4','-',']','.','|','.','^','.','.','.','.','.','^','.','|'],
+['|','.','.','.','f','.','h','.','.','.','|','.','6',']','.','b','.','[','8','.','|'],
+['|','.','[','-','2','i','1','-',']','.','|','.','_','.','.','.','.','.','_','.','|'],
 ['|','.','.','.','|','.','|','.','.','.','|','.','.','.','^','.','^','.','.','.','|'],
 ['|','.','b','.','_','.','_','.','b','.','_','.','b','.','_','.','_','.','b','.','|'],
 ['|','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
@@ -1006,6 +1102,56 @@ map_holder[level-1].forEach((row, i) => {
         case 'p':
           powerups.push(
             new Powerup({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
+        case 'h':
+          powerups.push(
+            new Heartup({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
+        case 'f':
+          powerups.push(
+            new Fastup({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
+        case 'i':
+          powerups.push(
+            new Inviup({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
+        case 'k':
+          powerups.push(
+            new KeyHor({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
+        case 'l':
+          powerups.push(
+            new KeyVer({
               position: {
                 x: j * Boundary.width + Boundary.width / 2,
                 y: i * Boundary.height + Boundary.height / 2
