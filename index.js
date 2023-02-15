@@ -254,6 +254,56 @@ class KeyVer {
   }
 }
 
+class Teleport {
+  constructor({position}){
+      this.position=position
+      this.radius=8
+      this.recharge=false
+      this.recharge_points=false
+  }
+  draw(){
+    c.beginPath()
+    c.moveTo(this.position.x-15,this.position.y)
+    c.lineTo(this.position.x,this.position.y-15)
+    c.lineTo(this.position.x,this.position.y+15)
+    c.fillStyle = this.recharge ? '#808080' : '#FFFFFF'
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.moveTo(this.position.x+15,this.position.y)
+    c.lineTo(this.position.x,this.position.y-15)
+    c.lineTo(this.position.x,this.position.y+15)
+    c.fillStyle = this.recharge ? '#808080' : '#FFFFFF'
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.fillStyle = this.recharge ? '#808080' : '#FFFFFF'
+    c.fillRect(this.position.x-10,this.position.y-10,20,20)
+    c.fill()
+    c.closePath()
+
+    c.beginPath()
+    c.moveTo(this.position.x-10,this.position.y)
+    c.lineTo(this.position.x,this.position.y-10)
+    c.lineTo(this.position.x,this.position.y+10)
+    c.fillStyle='#1b1b1b'
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.moveTo(this.position.x+10,this.position.y)
+    c.lineTo(this.position.x,this.position.y-10)
+    c.lineTo(this.position.x,this.position.y+10)
+    c.fillStyle='#1b1b1b'
+    c.fill()
+    c.closePath()
+    c.beginPath()
+    c.fillStyle='#1b1b1b'
+    c.fillRect(this.position.x-7.5,this.position.y-7.5,15,15)
+    c.fill()
+    c.closePath()
+  }
+}
+
 
 const palets = []
 const boundaries = []
@@ -263,6 +313,7 @@ const heartups = []
 const fastups = []
 const inviups = []
 const keyvers = []
+const teleports = []
 const ghosts = [
     new Ghost({
       position: 
@@ -754,7 +805,7 @@ const map18 = [
 const map19 = [
 ['1','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','2'],
 ['|',' ','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
-['|','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
+['|','.','l','.','.','.','.','l','.','.','.','.','.','.','.','.','.','.','.','.','|'],
 ['|','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
 ['|','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
 ['|','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','|'],
@@ -920,7 +971,7 @@ const mapboss = [
 ]
 
 const map_holder = [
-map18,  map2,  map3,  map4,  map5,
+map19,  map2,  map3,  map4,  map5,
 map6,  map7,  map8,  map9,  map10,
 map11, map12, map13, map14, map15,
 map16, map17, map18, map19, map20,
@@ -1188,6 +1239,16 @@ map_holder[level-1].forEach((row, i) => {
         case 'k':
           keyvers.push(
             new KeyVer({
+              position: {
+                x: j * Boundary.width + Boundary.width / 2,
+                y: i * Boundary.height + Boundary.height / 2
+              }
+            })
+          )
+          break
+        case 'l':
+          teleports.push(
+            new Teleport({
               position: {
                 x: j * Boundary.width + Boundary.width / 2,
                 y: i * Boundary.height + Boundary.height / 2
@@ -1481,6 +1542,48 @@ for (let i = inviups.length-1; 0 <= i; i--) {
         keyvers.splice(i,1)
         doors.splice(0,1)
       }
+    }
+
+    for (let i = teleports.length-1; 0 <= i; i--) {
+      const teleport = teleports[i]
+      teleport.draw()
+        if (Math.hypot(teleport.position.x - player.position.x, teleport.position.y - player.position.y) < teleport.radius + player.radius) {
+          if (teleports[i].recharge_points===false) {
+          if (i==0) {
+            player.position.x=teleports[i+1].position.x
+            player.position.y=teleports[i+1].position.y
+          } else {
+            player.position.x=teleports[i-1].position.x
+            player.position.y=teleports[i-1].position.y
+          }
+            teleports.forEach(teleportt => {
+              teleportt.recharge_points = true
+              teleportt.recharge = true
+              setTimeout(() => {
+                teleportt.recharge = false
+                setTimeout(() => {
+                  teleportt.recharge = true
+                  setTimeout(() => {
+                    teleportt.recharge = false
+                    setTimeout(() => {
+                      teleportt.recharge = true
+                      setTimeout(() => {
+                        teleportt.recharge = false
+                        setTimeout(() => {
+                          teleportt.recharge = true
+                          setTimeout(() => {
+                            teleportt.recharge_points = false
+                            teleportt.recharge = false
+                          }, 250)
+                        }, 250)
+                      }, 250)
+                    }, 250)
+                  }, 250)
+                }, 250)
+              }, 3500)
+            })
+          }    
+        } 
     }
 
     if (!player.invincible_points) {
