@@ -367,7 +367,7 @@ let lastKeyad = ''
 let score = 0
 let time = 150000
 let lives = 5
-let level = 10
+let level = 1
 let time_level = 1
 let fake_value = false
 
@@ -1320,7 +1320,13 @@ function animate() {
       if (boundaries.length!==0) {
         doors.splice(0,3)
         boundaries.splice(0,3)
-        fake_value=true
+        if (level===25) level+=1  
+        else fake_value=true
+      }
+      else if (level===26){
+        levelMid.innerHTML= '\xa0\xa0' + 'YOU WIN!!!'
+        levelMid.setAttribute("class", "unselectable mid")
+        cancelAnimationFrame(animationId)
       }
       else if (fake_value===true) {
         level+=1  
@@ -1780,7 +1786,7 @@ for (let i = inviups.length-1; 0 <= i; i--) {
               player.velocity.x = 0
               player.velocity.y = 0
             }
-            else cancelAnimationFrame(animationId)}  
+            else time=0}
     }}}
 
     for (let i = palets.length-1; 0 <= i; i--) {
