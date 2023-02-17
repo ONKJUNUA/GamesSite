@@ -127,6 +127,55 @@ class Ghost {
   }
 }
 
+class Smart {
+  static speed = 4
+  constructor({position,velocity,eyesad,eyesws}){
+      this.position=position
+      this.velocity=velocity
+      this.radius=14
+      this.prevCollisions = []
+      this.speed = 4
+      this.scared = false
+      this.scared_points = false
+      this.eyesws = 0
+      this.eyesad = 0
+  }
+  draw(){
+    c.save()
+      c.beginPath()
+      c.fillStyle = this.scared ? '#FFFFFF' : '#808080'
+      c.fillRect(this.position.x+this.radius,this.position.y-4,2*-this.radius,this.radius+4)
+      c.arc(this.position.x,this.position.y-3,this.radius,0,Math.PI, true)
+      c.fill()
+      c.closePath()
+      c.beginPath()
+      c.fillStyle = '#1b1b1b'
+      c.arc(this.position.x-6+this.eyesad,this.position.y-3+this.eyesws,5,0,Math.PI*2,true)
+      c.arc(this.position.x+6+this.eyesad,this.position.y-3+this.eyesws,5,0,Math.PI*2,true)
+      c.fill()
+      c.closePath()
+      c.beginPath()
+      c.fillStyle = this.scared ? '#FFFFFF' : '#808080'
+      c.arc(this.position.x-6+this.eyesad,this.position.y-3+this.eyesws,2,0,Math.PI*2,true)
+      c.arc(this.position.x+6+this.eyesad,this.position.y-3+this.eyesws,2,0,Math.PI*2,true)
+      c.fill()
+      c.closePath()
+      c.beginPath()
+      c.fillStyle = '#1b1b1b'
+      c.arc(this.position.x-9,this.position.y+14,3,0,Math.PI,true)
+      c.arc(this.position.x,this.position.y+14,3,0,Math.PI,true)
+      c.arc(this.position.x+9,this.position.y+14,3,0,Math.PI,true)
+      c.fill()
+      c.closePath()
+    c.restore()
+  }
+  update(){
+      this.draw()
+      this.position.x+=this.velocity.x
+      this.position.y+=this.velocity.y
+  }
+}
+
 class Palet {
     constructor({position}){
         this.position=position
@@ -365,7 +414,7 @@ let lastKeyws = ''
 let lastKeyad = ''
 
 let score = 0
-let time = 150000
+let time = 100000
 let lives = 5
 let level = 1
 let time_level = 1
@@ -1626,7 +1675,7 @@ function animate() {
         else levelMid.innerHTML='\xa0\xa0\xa0\xa0' + 'LEVEL '+ level
         levelMid.setAttribute("class", "unselectable mid")
         setTimeout(() => {
-          time = 150000
+          time = 100000
           timeEl.innerHTML= '<br>' + 'TIME: '+ time/1000
           map_creation(level)
           if (level<=6)
@@ -1728,7 +1777,7 @@ function animate() {
                 velocity: {x:0,y:Ghost.speed}
               })
                   )
-            else 
+            else if (level<=24)
             ghosts.push (
               new Ghost({
                 position: 
@@ -1767,6 +1816,27 @@ function animate() {
                 velocity: {x:Ghost.speed,y:0}
               })
                   )
+              else
+              ghosts.push (
+                new Smart({
+                  position: 
+                  {x:Boundary.width * 19 + Boundary.width/2,
+                  y:Boundary.height + Boundary.height/2},
+                  velocity: {x:-Smart.speed,y:0}
+                }),
+                new Smart({
+                  position: 
+                  {x:Boundary.width * 19 + Boundary.width/2,
+                  y:Boundary.height * 19 + Boundary.height/2},
+                  velocity: {x:-Smart.speed,y:0}
+                }),
+                new Smart({
+                  position: 
+                  {x:Boundary.width + Boundary.width/2,
+                  y:Boundary.height * 19 + Boundary.height/2},
+                  velocity: {x:Smart.speed,y:0}
+                })
+                    )
             player.position.x = Boundary.width + Boundary.width/2
             player.position.y = Boundary.height + Boundary.height/2
             player.rotation = 0
