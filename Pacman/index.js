@@ -13,8 +13,8 @@ const startMid = document.querySelector('#startMid')
 const setMid = document.querySelector('#setMid')
 const credMid = document.querySelector('#credMid')
 
-canvas.width = screen.width
-canvas.height = screen.height
+canvas.width = 840;
+canvas.height = 840;
 
 class Boundary {
     static width = 40
@@ -414,8 +414,8 @@ let lastKeyws = ''
 let lastKeyad = ''
 
 let score = 0
-let time = 100000
-let lives = 5
+let time = 150000
+let lives = 7
 let level = 1
 let time_level = 1
 let fake_value = false
@@ -1675,7 +1675,7 @@ function animate() {
         else levelMid.innerHTML='\xa0\xa0\xa0\xa0' + 'LEVEL '+ level
         levelMid.setAttribute("class", "unselectable mid")
         setTimeout(() => {
-          time = 100000
+          time = 150000
           timeEl.innerHTML= '<br>' + 'TIME: '+ time/1000
           map_creation(level)
           if (level<=6)
@@ -1818,11 +1818,11 @@ function animate() {
                   )
               else
               ghosts.push (
-                new Smart({
+                new Ghost({
                   position: 
                   {x:Boundary.width * 19 + Boundary.width/2,
                   y:Boundary.height + Boundary.height/2},
-                  velocity: {x:-Smart.speed,y:0}
+                  velocity: {x:-Ghost.speed,y:0}
                 }),
                 new Smart({
                   position: 
@@ -1830,11 +1830,11 @@ function animate() {
                   y:Boundary.height * 19 + Boundary.height/2},
                   velocity: {x:-Smart.speed,y:0}
                 }),
-                new Smart({
+                new Ghost({
                   position: 
                   {x:Boundary.width + Boundary.width/2,
                   y:Boundary.height * 19 + Boundary.height/2},
-                  velocity: {x:Smart.speed,y:0}
+                  velocity: {x:Ghost.speed,y:0}
                 })
                     )
             player.position.x = Boundary.width + Boundary.width/2

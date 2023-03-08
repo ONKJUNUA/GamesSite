@@ -1,11 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     background-color: #1b1b1b;
-    overflow-y: hidden;
-    overflow-x: hidden;
 }
 canvas {
-    margin-left:28%;
-    width: 100%;
+    position: absolute;
+    margin-left: 28vw;
+    margin-top: 2vh;
+    width: 44vw !important;
+    z-index: -1;
 }
 
 p {
@@ -73,8 +80,7 @@ span {
 
 @media (max-width: 900px){
     canvas{
-        width:220%;
-        margin-left:2%;
+        width:100vw;
     }
     body{
         overflow-y: unset;
