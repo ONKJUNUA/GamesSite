@@ -1,54 +1,19 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background-color: #1b1b1b;
 }
 canvas {
     position: absolute;
     margin-left: 28vw;
-    margin-top: 2vh;
+    margin-top: 2vw;
     width: 44vw !important;
     z-index: -1;
 }
-
-p {
-    text-align: center;
-}
-
-.block {
-    display: block;
-    width: 20%;
-    height: 5vw;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 3vw;
-    font-weight: 1000;
-    margin-left: 38%;
-    margin-top: 9%;
-    border: none;
-    background-color: #FFFFFF;
-    color: #1b1b1b;
-    cursor: pointer;
-    text-align: center;
-    position: absolute;
-  }
-
-  .br {
-    margin-top: 18%;
-    margin-left: 43%;
-  }
-  .brr {
-    margin-top: 27%;
-  }
 
 span {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 1000;
     font-size: 3vw;
-    color: white;
+    color: #fff;
     position: absolute;
     left: 4%;
 }
@@ -56,18 +21,15 @@ span {
 .reverse {
     left: 80%;
 }
+
 .mid{
     font-size: 6vw;
     left: 30%;
-    margin-top: 17vw;
+    margin-top: 20vw;
     display: block;
 }
 .hide{
     display: none;
-}
-
-.title{
-    width: 400px;
 }
 
 .unselectable{
@@ -78,44 +40,30 @@ span {
     -ms-user-select: none;
 }
 
+#scoreEl,#timeEl,#levelEl,#livesEl{
+    margin-top: 2vw;
+}
+
 @media (max-width: 900px){
     canvas{
-        width:100vw;
+        width: 90vw !important;
+        margin-left: 3vw;
+        margin-top: 3vw;
     }
     body{
         overflow-y: unset;
-    }
-    span{
-        margin-top: 95vw;
-        font-size: 5vw;
     }
     .reverse {
         left: 72%;
     }
     .mid{
         font-size: 10vw;
-        left: 18%;
-        margin-top: 40vw;   
+        left: 16%;
+        margin-top: 42vw;   
     }
-    .block{
-        width: 40%;
-        height: 10vw;
-        margin-left: 28%;
-        margin-top: 20vw;
-        font-size: 6vw;
-    }
-    .br {
-        margin-top: 35vw;
-        margin-left: 43%;
-      }
-      .brr {
-        margin-top: 50vw;
-      }
-}
-
-@media (min-width: 1900px){
-    canvas{
-        width:1900px;
+    #scoreEl,#timeEl,#levelEl,#livesEl{
+        font-size: 5vw;
+        margin-top: 98vw;
     }
 }
 

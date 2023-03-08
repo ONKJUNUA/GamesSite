@@ -9,10 +9,6 @@ const livesEl = document.querySelector('#livesEl')
 const levelMid = document.querySelector('#levelMid')
 const scoreMid = document.querySelector('#scoreMid')
 
-const startMid = document.querySelector('#startMid')
-const setMid = document.querySelector('#setMid')
-const credMid = document.querySelector('#credMid')
-
 canvas.width = 840;
 canvas.height = 840;
 
@@ -2268,9 +2264,6 @@ for (let i = inviups.length-1; 0 <= i; i--) {
     }  
 }
 function start() {
-  startMid.setAttribute("class", "hide")
-  setMid.setAttribute("class", "hide")
-  credMid.setAttribute("class", "hide")
   setTimeout(() => {
     scoreEl.setAttribute("class", "unselectable")
     timeEl.setAttribute("class", "unselectable")
@@ -2282,8 +2275,9 @@ function start() {
     levelMid.setAttribute("class", "unselectable hide")
   }, 1000)
   }, 250);
-  
 }
+
+start();
 
 addEventListener('keydown',({key})=>{
     switch(key){
