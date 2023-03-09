@@ -2263,6 +2263,7 @@ for (let i = inviups.length-1; 0 <= i; i--) {
       timeEl.innerHTML='<br>'+'TIME: 00'+ time/1000
     }  
 }
+
 function start() {
   setTimeout(() => {
     scoreEl.setAttribute("class", "unselectable")
