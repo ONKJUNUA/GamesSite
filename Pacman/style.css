@@ -1,5 +1,6 @@
 body {
     background-color: #1b1b1b;
+    overflow: hidden;
 }
 canvas {
     position: absolute;
@@ -44,7 +45,33 @@ span {
     margin-top: 2vw;
 }
 
-@media (max-width: 900px){
+@media (max-width: 1000px){
+    canvas{
+        width: 68vw !important;
+        margin-left: 16vw;
+        margin-top: 3vw;
+    }
+    body{
+        overflow-y: unset;
+    }
+    .reverse {
+        left: 61%;
+    }
+    .mid{
+        font-size: 10vw;
+        left: 16%;
+        margin-top: 32vw;   
+    }
+    span {
+        left: 17%;
+    }
+    #scoreEl,#timeEl,#levelEl,#livesEl{
+        font-size: 5vw;
+        margin-top: 74vw;
+    }
+}
+
+@media (max-width: 800px){
     canvas{
         width: 90vw !important;
         margin-left: 3vw;
@@ -61,9 +88,25 @@ span {
         left: 16%;
         margin-top: 42vw;   
     }
+    span {
+        left: 4%;
+    }
     #scoreEl,#timeEl,#levelEl,#livesEl{
         font-size: 5vw;
-        margin-top: 98vw;
+        margin-top: 96vw;
+    }
+}
+
+@media (max-width: 600px){
+    canvas{
+        margin-top: 16vw;
+    }
+    .mid{
+        margin-top: 56vw;   
+    }
+    #scoreEl,#timeEl,#levelEl,#livesEl{
+        font-size: 5vw;
+        margin-top: 108vw;
     }
 }
 
