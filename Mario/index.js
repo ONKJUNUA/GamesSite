@@ -36,8 +36,8 @@ class Player{
 class Platform{
     constructor(){
         this.position = {
-            x: 300,
-            y: 700
+            x: 400,
+            y: 640
         }
         this.width = 400;
         this.height = 40;
@@ -63,11 +63,18 @@ function animate(){
 
     if (keys.d.pressed && keys.a.pressed){
         player.velocity.x=0;
-    } else if (keys.d.pressed){
+    } else if (keys.d.pressed && player.position.x < 420){
         player.velocity.x=10;
-    } else if (keys.a.pressed){
+    } else if (keys.a.pressed && player.position.x > 210){
         player.velocity.x=-10;
-    }else player.velocity.x=0;
+    }else {
+        player.velocity.x=0;
+        if (keys.d.pressed){
+            platform.position.x-=10
+        } else if (keys.a.pressed){
+            platform.position.x+=10
+        }
+    }
 
     if (player.position.y + player.height <= platform.position.y 
         && player.position.y+player.height+player.velocity.y > platform.position.y
