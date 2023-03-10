@@ -4,7 +4,7 @@ const c = canvas.getContext('2d');
 canvas.width=840;
 canvas.height=840;
 
-const gravity = 0.2
+const gravity = 1
 
 class Player{
     constructor(){
@@ -26,6 +26,7 @@ class Player{
     update(){
         this.draw();
         this.position.y+=this.velocity.y;
+        this.position.x+=this.velocity.x;
         if (this.position.y + this.height + this.velocity.y < canvas.height)
             this.velocity.y += gravity;
         else this.velocity.y=0
@@ -42,6 +43,19 @@ function animate(){
 
 animate();
 
-addEventListener('keydown', () => {
-    
+addEventListener('keydown',({key})=>{
+    switch(key){
+        case 'w':
+        case "ArrowUp":
+            player.velocity.y-=20
+            break
+        case 'a':
+        case "ArrowLeft":
+            player.velocity.x-=10
+            break
+        case 'd':
+        case "ArrowRight":
+            player.velocity.x+=10
+            break
+    }
 });
