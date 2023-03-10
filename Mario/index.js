@@ -9,15 +9,15 @@ const gravity = 1
 class Player{
     constructor(){
         this.position = {
-            x: 100,
-            y: 100
+            x:100,
+            y:100
         }
         this.velocity ={
-            x: 0,
-            y: 1
+            x:0,
+            y:1
         }
-        this.width = 40;
-        this.height = 40;
+        this.width=40;
+        this.height=40;
     }
     draw(){
         c.fillStyle = '#fff';
@@ -34,13 +34,10 @@ class Player{
 }
 
 class Platform{
-    constructor(){
-        this.position = {
-            x: 400,
-            y: 640
-        }
-        this.width = 400;
-        this.height = 40;
+    constructor({x,y}){
+        this.position={x,y}
+        this.width=400;
+        this.height=40;
     }
     draw(){
         c.fillStyle = '#fff';
@@ -49,7 +46,7 @@ class Platform{
 }
 
 const player = new Player();
-const platform = new Platform();
+const platforms = [new Platform({x: 400, y:440}), new Platform({x: 200, y:640})];
 const keys = {
     a:{pressed:false},
     d:{pressed:false}
@@ -59,7 +56,9 @@ function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
     player.update();
-    platform.draw();
+    platforms.forEach(platform => {
+        platform.draw();
+    });
 
     if (keys.d.pressed && keys.a.pressed){
         player.velocity.x=0;
@@ -70,18 +69,23 @@ function animate(){
     }else {
         player.velocity.x=0;
         if (keys.d.pressed){
-            platform.position.x-=10
+            platforms.forEach(platform => {
+                platform.position.x-=10;
+            })
         } else if (keys.a.pressed){
-            platform.position.x+=10
+            platforms.forEach(platform => {
+                platform.position.x+=10;
+            })
         }
     }
-
-    if (player.position.y + player.height <= platform.position.y 
-        && player.position.y+player.height+player.velocity.y > platform.position.y
-        && player.position.x+player.width >= platform.position.x
-        && player.position.x <= platform.position.x+platform.width){
-        player.velocity.y=0;
-    }
+    platforms.forEach(platform => {
+        if (player.position.y + player.height <= platform.position.y 
+            && player.position.y+player.height+player.velocity.y > platform.position.y
+            && player.position.x+player.width >= platform.position.x
+            && player.position.x <= platform.position.x+platform.width){
+            player.velocity.y=0;
+        }
+    })
 }
 
 animate();
