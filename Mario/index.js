@@ -35,10 +35,27 @@ class Player{
 
 const player = new Player();
 
+const keys = {
+    a:{
+        pressed:false
+    },
+    d:{
+        pressed:false
+    }
+}
+
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
     player.update();
+
+    if (keys.d.pressed){
+        player.velocity.x=10;
+    } else if (keys.a.pressed){
+        player.velocity.x=-10;
+    }else player.velocity.x=0;
+
+    
 }
 
 animate();
@@ -47,15 +64,28 @@ addEventListener('keydown',({key})=>{
     switch(key){
         case 'w':
         case "ArrowUp":
-            player.velocity.y-=20
-            break
+            player.velocity.y=-20;
+            break;
         case 'a':
         case "ArrowLeft":
-            player.velocity.x-=10
-            break
+            keys.a.pressed = true;
+            break;
         case 'd':
         case "ArrowRight":
-            player.velocity.x+=10
-            break
+            keys.d.pressed = true;
+            break;
+    }
+});
+
+addEventListener('keyup',({key})=>{
+    switch(key){
+        case 'a':
+        case "ArrowLeft":
+            keys.a.pressed = false;
+            break;
+        case 'd':
+        case "ArrowRight":
+            keys.d.pressed = false;
+            break;
     }
 });
