@@ -6,35 +6,33 @@
 body {
     background-color: #1b1b1b;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
-    width: 100vw;
     overflow-x: hidden;
 }
+
 canvas {
-    border: #fff 20px solid;
+    margin-top: 50px;
 }
 
 span {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 1000;
-    font-size: 3vw;
+    font-size: 2.5vw;
     color: #fff;
     position: absolute;
-    left: 4%;
-    top: 0%;
+    left: 4vw;
+    top: 50px;
 }
 
 .reverse {
-    left: 82%;
+    left: 84vw;
 }
 
 .mid{
-    font-size: 6vw;
-    top: 50%;
+    font-size: 5vw;
+    margin-top: 360px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%);
 }
 
 .hide{
@@ -49,67 +47,45 @@ span {
     -ms-user-select: none;
 }
 
-#scoreEl,#timeEl,#levelEl,#livesEl{
-    margin-top: 4vw;
-}
-
-@media (min-width: 2000px){
-    canvas{
-        width: 840px;
-    }
-}
-
-@media (max-width: 2000px){
-    canvas{
-        width: 42vw;
-    }
-}
-
-@media (max-width: 1500px){
-    canvas{
-        width: 50vw;
-        border: #fff 15px solid;
-        margin-top: 15vw;
+@media (min-width:2000px){
+    span {
+        font-size: 50px;
     }
     .mid{
-        font-size: 7vw;
-        margin-top: 8vw;
+        font-size: 100px;
     }
 }
 
-@media (max-width: 1000px){
+@media (max-width:1600px){
     canvas{
-        width: 68vw;
-        border: #fff 15px solid;
+        width: 52vw;
+        margin-top: 50px;
+    }
+    .mid{
+        font-size: 7.5vw;
+        margin-top:50px;
+        top: 21vw;
+    }
+}
+
+@media (max-width:800px){
+    canvas{
+        width: 96vw;
+        margin-top: 150px;
+    }
+    .mid{
+        font-size: 10vw;
+        margin-top:150px;
+        top: 42vw;
+    }
+    span {
+        font-size: 5vw;
+        top: 20px;
     }
     .reverse {
-        left: 72%;
-    }
-    #scoreEl,#timeEl,#levelEl,#livesEl{
-        font-size: 5vw;
+        left: 72vw;
     }
 }
-
-@media (max-width: 800px){
-    canvas{
-        width: 90vw;
-        border: #fff 10px solid;
-    }
-    #scoreEl,#timeEl,#levelEl,#livesEl{
-        font-size: 5vw;
-    }
-}
-
-@media (max-width: 500px){
-    .reverse {
-        left: 68%;
-    }
-    #scoreEl,#timeEl,#levelEl,#livesEl{
-        font-size: 6vw;
-        margin-top: 30vw;
-    }
-}
-
 
 ::-webkit-scrollbar {
     width: 10px;

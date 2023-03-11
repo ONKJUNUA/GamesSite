@@ -410,7 +410,7 @@ let lastKeyws = ''
 let lastKeyad = ''
 
 let score = 0
-let time = 1000
+let time = 150000
 let lives = 7
 let level = 1
 let time_level = 1
