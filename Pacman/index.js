@@ -410,7 +410,7 @@ let lastKeyws = ''
 let lastKeyad = ''
 
 let score = 0
-let time = 150000
+let time = 1000
 let lives = 7
 let level = 1
 let time_level = 1
@@ -1659,7 +1659,7 @@ function animate() {
         else fake_value=true
       }
       else if (level===38){
-        levelMid.innerHTML= '\xa0\xa0' + 'YOU WIN!!!'
+        levelMid.innerHTML = 'YOU WIN!!!'
         levelMid.setAttribute("class", "unselectable mid")
         cancelAnimationFrame(animationId)
       }
@@ -1667,8 +1667,8 @@ function animate() {
         level+=1  
         if (level>=10) levelEl.innerHTML='LEVEL: '+ level
         else levelEl.innerHTML='LEVEL: 0'+ level
-        if (level<10) levelMid.innerHTML='\xa0\xa0\xa0\xa0\xa0' + 'LEVEL '+ level
-        else levelMid.innerHTML='\xa0\xa0\xa0\xa0' + 'LEVEL '+ level
+        if (level<10) levelMid.innerHTML='LEVEL '+ level
+        else levelMid.innerHTML='LEVEL '+ level
         levelMid.setAttribute("class", "unselectable mid")
         setTimeout(() => {
           time = 150000

@@ -1,13 +1,19 @@
+*{
+    margin:0;
+    padding:0;
+}
+
 body {
     background-color: #1b1b1b;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
 }
 canvas {
-    position: absolute;
-    margin-left: 28vw;
-    margin-top: 2vw;
-    width: 44vw !important;
-    z-index: -1;
+    border: #fff 20px solid;
 }
 
 span {
@@ -17,18 +23,20 @@ span {
     color: #fff;
     position: absolute;
     left: 4%;
+    top: 0%;
 }
 
 .reverse {
-    left: 80%;
+    left: 82%;
 }
 
 .mid{
     font-size: 6vw;
-    left: 30%;
-    margin-top: 20vw;
-    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
+
 .hide{
     display: none;
 }
@@ -42,73 +50,66 @@ span {
 }
 
 #scoreEl,#timeEl,#levelEl,#livesEl{
-    margin-top: 2vw;
+    margin-top: 4vw;
+}
+
+@media (min-width: 2000px){
+    canvas{
+        width: 840px;
+    }
+}
+
+@media (max-width: 2000px){
+    canvas{
+        width: 42vw;
+    }
+}
+
+@media (max-width: 1500px){
+    canvas{
+        width: 50vw;
+        border: #fff 15px solid;
+        margin-top: 15vw;
+    }
+    .mid{
+        font-size: 7vw;
+        margin-top: 8vw;
+    }
 }
 
 @media (max-width: 1000px){
     canvas{
-        width: 68vw !important;
-        margin-left: 16vw;
-        margin-top: 3vw;
-    }
-    body{
-        overflow-y: unset;
+        width: 68vw;
+        border: #fff 15px solid;
     }
     .reverse {
-        left: 61%;
-    }
-    .mid{
-        font-size: 10vw;
-        left: 16%;
-        margin-top: 32vw;   
-    }
-    span {
-        left: 17%;
+        left: 72%;
     }
     #scoreEl,#timeEl,#levelEl,#livesEl{
         font-size: 5vw;
-        margin-top: 74vw;
     }
 }
 
 @media (max-width: 800px){
     canvas{
-        width: 90vw !important;
-        margin-left: 3vw;
-        margin-top: 3vw;
-    }
-    body{
-        overflow-y: unset;
-    }
-    .reverse {
-        left: 72%;
-    }
-    .mid{
-        font-size: 10vw;
-        left: 16%;
-        margin-top: 42vw;   
-    }
-    span {
-        left: 4%;
+        width: 90vw;
+        border: #fff 10px solid;
     }
     #scoreEl,#timeEl,#levelEl,#livesEl{
         font-size: 5vw;
-        margin-top: 96vw;
     }
 }
 
-@media (max-width: 600px){
-    canvas{
-        margin-top: 16vw;
-    }
-    .mid{
-        margin-top: 56vw;   
+@media (max-width: 500px){
+    .reverse {
+        left: 68%;
     }
     #scoreEl,#timeEl,#levelEl,#livesEl{
-        font-size: 5vw;
-        margin-top: 108vw;
+        font-size: 6vw;
+        margin-top: 30vw;
     }
 }
+
 
 ::-webkit-scrollbar {
     width: 10px;
