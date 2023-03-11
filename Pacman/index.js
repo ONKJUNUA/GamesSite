@@ -2307,4 +2307,5 @@ addEventListener('keydown',({key})=>{
             lastKey = 'd'
             break
     }
-})
+});
+
