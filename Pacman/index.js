@@ -2284,28 +2284,43 @@ addEventListener('keydown',({key})=>{
     switch(key){
         case 'w':
         case "ArrowUp":
-            keys.w.pressed = true
-            lastKeyws = 'w'
-            lastKey = 'w'
+            up();
             break
         case 'a':
         case "ArrowLeft":
-            keys.a.pressed = true
-            lastKeyad = 'a'
-            lastKey = 'a'
+            left();
             break
         case 's':
         case "ArrowDown":
-            keys.s.pressed = true
-            lastKeyws = 's'
-            lastKey = 's'
+            down();
             break
         case 'd':
         case "ArrowRight":
-            keys.d.pressed = true
-            lastKeyad = 'd'
-            lastKey = 'd'
+            right();
             break
     }
 });
 
+function left(){
+  keys.a.pressed = true
+  lastKeyad = 'a'
+  lastKey = 'a'
+}
+
+function right(){
+  keys.d.pressed = true
+  lastKeyad = 'd'
+  lastKey = 'd'
+}
+
+function up(){
+  keys.w.pressed = true
+  lastKeyws = 'w'
+  lastKey = 'w'
+}
+
+function down(){
+  keys.s.pressed = true
+  lastKeyws = 's'
+  lastKey = 's'
+}
