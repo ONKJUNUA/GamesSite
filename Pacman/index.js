@@ -1419,7 +1419,7 @@ map_holder[level-1].forEach((row, i) => {
                 x: Boundary.width * j,
                 y: Boundary.height * i
               },
-              image: createImage('./img/boundaries/block.png')
+              image: createImage('./img/boundaries/Block.png')
             })
           )
           break
