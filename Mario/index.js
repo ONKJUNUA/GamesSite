@@ -29,15 +29,17 @@ class Player{
         this.position.x+=this.velocity.x;
         if (this.position.y + this.height + this.velocity.y < canvas.height)
             this.velocity.y += gravity;
-        else this.velocity.y=0
+        else {
+            this.velocity.y=0;
+            if (player.velocity.y===0 && canJump) player.velocity.y=-20;}
     }
 }
 
 class Platform{
     constructor({x,y}){
         this.position={x,y}
-        this.width=80;
-        this.height=80;
+        this.width=40;
+        this.height=40;
     }
     draw(){
         c.fillStyle = '#fff';
@@ -46,14 +48,14 @@ class Platform{
 }
 
 const player = new Player();
-const platforms = [new Platform({x: 400, y:440}), new Platform({x: 200, y:640})];
+const platforms = [new Platform({x: 100, y:640}), new Platform({x: 240, y:640}), new Platform({x: 280, y:640}), new Platform({x: 320, y:640})];
 const keys = {
     a:{pressed:false},
-    d:{pressed:false},
-    w:{pressed:false}
+    d:{pressed:false}
 }
 
 let lastKey;
+let canJump=false;
 
 function animate(){
     requestAnimationFrame(animate);
@@ -61,6 +63,16 @@ function animate(){
     player.update();
     platforms.forEach(platform => {
         platform.draw();
+    });
+
+    platforms.forEach(platform => {
+        if (player.position.y + player.height <= platform.position.y 
+            && player.position.y + player.height+player.velocity.y > platform.position.y
+            && player.position.x + player.width >= platform.position.x
+            && player.position.x <= platform.position.x + platform.width){
+                player.velocity.y=0;
+                if (player.velocity.y===0 && canJump) player.velocity.y=-20;
+            }
     });
 
     if (keys.d.pressed && player.position.x < 420 && lastKey==="d"){
@@ -78,16 +90,8 @@ function animate(){
                 platform.position.x+=10;
             })
         }
-    }
-    platforms.forEach(platform => {
-        if (player.position.y + player.height <= platform.position.y 
-            && player.position.y+player.height+player.velocity.y > platform.position.y
-            && player.position.x+player.width >= platform.position.x
-            && player.position.x <= platform.position.x+platform.width){
-            player.velocity.y=0;
-        }
-    })
-}
+    };
+};
 
 animate();
 
@@ -95,7 +99,7 @@ addEventListener('keydown',({key})=>{
     switch(key){
         case 'w':
         case "ArrowUp":
-            player.velocity.y=-20;
+            canJump = true;
             break;
         case 'a':
         case "ArrowLeft":
@@ -112,6 +116,10 @@ addEventListener('keydown',({key})=>{
 
 addEventListener('keyup',({key})=>{
     switch(key){
+        case 'w':
+        case "ArrowUp":
+            canJump = false;
+            break;
         case 'a':
         case "ArrowLeft":
             lastKey="d";
