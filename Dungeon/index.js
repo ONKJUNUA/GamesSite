@@ -49,11 +49,8 @@ const player = new Player();
 const platforms = [new Platform({x: 400, y:440}), new Platform({x: 200, y:640})];
 const keys = {
     a:{pressed:false},
-    d:{pressed:false},
-    w:{pressed:false}
+    d:{pressed:false}
 }
-
-let lastKey;
 
 function animate(){
     requestAnimationFrame(animate);
@@ -63,17 +60,19 @@ function animate(){
         platform.draw();
     });
 
-    if (keys.d.pressed && player.position.x < 420 && lastKey==="d"){
+    if (keys.d.pressed && keys.a.pressed){
+        player.velocity.x=0;
+    } else if (keys.d.pressed && player.position.x < 420){
         player.velocity.x=10;
-    } else if (keys.a.pressed && player.position.x > 210 && lastKey==="a"){
+    } else if (keys.a.pressed && player.position.x > 210){
         player.velocity.x=-10;
     }else {
         player.velocity.x=0;
-        if (keys.d.pressed && lastKey==="d"){
+        if (keys.d.pressed){
             platforms.forEach(platform => {
                 platform.position.x-=10;
             })
-        } else if (keys.a.pressed && lastKey==="a"){
+        } else if (keys.a.pressed){
             platforms.forEach(platform => {
                 platform.position.x+=10;
             })
@@ -99,12 +98,10 @@ addEventListener('keydown',({key})=>{
             break;
         case 'a':
         case "ArrowLeft":
-            lastKey="a";
             keys.a.pressed = true;
             break;
         case 'd':
         case "ArrowRight":
-            lastKey="d";
             keys.d.pressed = true;
             break;
     }
@@ -114,12 +111,10 @@ addEventListener('keyup',({key})=>{
     switch(key){
         case 'a':
         case "ArrowLeft":
-            lastKey="d";
             keys.a.pressed = false;
             break;
         case 'd':
         case "ArrowRight":
-            lastKey="a";
             keys.d.pressed = false;
             break;
     }
