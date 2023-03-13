@@ -24,7 +24,7 @@ class Player{
         this.height=40;
     }
     draw(){
-        c.fillStyle = '#fff';
+        c.fillStyle = '#777';
         c.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
     update(){
@@ -47,7 +47,7 @@ class Player{
     }
 }
 
-class Platform{
+class Block{
     constructor({x,y}){
         this.position={x,y}
         this.width=40;
@@ -60,7 +60,7 @@ class Platform{
 }
 
 const player = new Player();
-const platforms = [new Platform({x: 100, y:640}), new Platform({x: 240, y:640}), new Platform({x: 280, y:640}), new Platform({x: 320, y:640})];
+const blocks = [new Block({x: 100, y:640}), new Block({x: 240, y:640}), new Block({x: 280, y:640}), new Block({x: 320, y:640})];
 const keys = {
     a:{pressed:false},
     d:{pressed:false}
@@ -71,22 +71,37 @@ const keys = {
 let lastKey;
 let canJump=false;
 let jumpsNumber=0;
+let xblocks = true;
 
 //animate function
 
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
-    player.update();
-    platforms.forEach(platform => {
-        platform.draw();
+    blocks.forEach(block => {
+        block.draw();
     });
 
-    platforms.forEach(platform => {
-        if (player.position.y + player.height <= platform.position.y 
-            && player.position.y + player.height+player.velocity.y > platform.position.y
-            && player.position.x + player.width >= platform.position.x
-            && player.position.x <= platform.position.x + platform.width){
+    if (player.position.y>0)
+        xblocks=true
+
+    blocks.forEach(block => {
+       if (player.position.x + player.width + player.velocity.x >= block.position.x
+           && player.position.x + player.velocity.x <= block.position.x + block.width
+           && player.position.y + player.height > block.position.y
+           && player.position.y <= block.position.y + block.height){
+               xblocks=false;
+           }
+        if (player.position.y >= block.position.y + block.height*0.9
+            && player.position.y + player.velocity.y <= block.position.y + block.height*0.9
+            && player.position.x + player.width >= block.position.x
+            && player.position.x <= block.position.x + block.width){
+                player.velocity.y=5;
+            }
+        else if (player.position.y + player.height <= block.position.y 
+            && player.position.y + player.height + player.velocity.y > block.position.y
+            && player.position.x + player.width >= block.position.x
+            && player.position.x <= block.position.x + block.width){    
                 player.velocity.y=0;
                 if (player.velocity.y===0 && canJump){
                     player.velocity.y=-20;
@@ -98,20 +113,21 @@ function animate(){
                 }
             }
     });
+    player.update();
 
-    if (keys.d.pressed && player.position.x < 420 && lastKey==="d"){
+    if (keys.d.pressed && player.position.x < 420 && lastKey==="d" && xblocks){
         player.velocity.x=10;
-    } else if (keys.a.pressed && player.position.x > 210 && lastKey==="a"){
+    } else if (keys.a.pressed && player.position.x > 210 && lastKey==="a" && xblocks){
         player.velocity.x=-10;
     }else {
         player.velocity.x=0;
-        if (keys.d.pressed && lastKey==="d"){
-            platforms.forEach(platform => {
-                platform.position.x-=10;
+        if (keys.d.pressed && lastKey==="d" && xblocks){
+            blocks.forEach(block => {
+                block.position.x-=10;
             })
-        } else if (keys.a.pressed && lastKey==="a"){
-            platforms.forEach(platform => {
-                platform.position.x+=10;
+        } else if (keys.a.pressed && lastKey==="a" && xblocks){
+            blocks.forEach(block => {
+                block.position.x+=10;
             })
         }
     };
