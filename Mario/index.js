@@ -100,6 +100,10 @@ function animate(){
             && player.position.x + player.width >= block.position.x
             && player.position.x <= block.position.x + block.width){
                 player.velocity.y=5;
+                block.position.y-=20;
+                setTimeout(() => {
+                    block.position.y=-800;
+                  }, 50);
                 jumpsNumber=0;
             }
         else if (player.position.y + player.height <= block.position.y 
