@@ -13,12 +13,12 @@ const gravity = 1
 class Player{
     constructor(){
         this.position = {
-            x:100,
-            y:100
+            x:0,
+            y:0
         }
         this.velocity ={
             x:0,
-            y:1
+            y:0
         }
         this.width=40;
         this.height=40;
@@ -60,7 +60,9 @@ class Block{
 }
 
 const player = new Player();
-const blocks = [new Block({x: 100, y:640}), new Block({x: 240, y:640}), new Block({x: 280, y:640}), new Block({x: 320, y:640})];
+const blocks = [new Block({x: 80, y:640}), new Block({x: 200, y:640}), new Block({x: 320, y:640}), 
+    new Block({x: 480, y:640}),new Block({x:240, y:480}), new Block({x: 240, y:480}), new Block({x: 440, y:320}), 
+    new Block({x: 600, y:320})];
 const keys = {
     a:{pressed:false},
     d:{pressed:false}
@@ -97,6 +99,7 @@ function animate(){
             && player.position.x + player.width >= block.position.x
             && player.position.x <= block.position.x + block.width){
                 player.velocity.y=5;
+                jumpsNumber=0;
             }
         else if (player.position.y + player.height <= block.position.y 
             && player.position.y + player.height + player.velocity.y > block.position.y
