@@ -1,3 +1,5 @@
+//setting up
+
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -5,6 +7,8 @@ canvas.width=840;
 canvas.height=840;
 
 const gravity = 1
+
+//classes
 
 class Player{
     constructor(){
@@ -31,7 +35,15 @@ class Player{
             this.velocity.y += gravity;
         else {
             this.velocity.y=0;
-            if (player.velocity.y===0 && canJump) player.velocity.y=-20;}
+            if (player.velocity.y===0 && canJump){
+                player.velocity.y=-20;
+                jumpsNumber++;
+                    if (jumpsNumber===3){
+                        player.velocity.y=-30;
+                        jumpsNumber=0;
+                    }
+            }
+        }
     }
 }
 
@@ -54,8 +66,13 @@ const keys = {
     d:{pressed:false}
 }
 
+//changeable variables
+
 let lastKey;
 let canJump=false;
+let jumpsNumber=0;
+
+//animate function
 
 function animate(){
     requestAnimationFrame(animate);
@@ -71,7 +88,14 @@ function animate(){
             && player.position.x + player.width >= platform.position.x
             && player.position.x <= platform.position.x + platform.width){
                 player.velocity.y=0;
-                if (player.velocity.y===0 && canJump) player.velocity.y=-20;
+                if (player.velocity.y===0 && canJump){
+                    player.velocity.y=-20;
+                    jumpsNumber++;
+                    if (jumpsNumber===3){
+                        player.velocity.y=-30;
+                        jumpsNumber=0;
+                    }
+                }
             }
     });
 
@@ -94,6 +118,8 @@ function animate(){
 };
 
 animate();
+
+//event listeners
 
 addEventListener('keydown',({key})=>{
     switch(key){
@@ -119,6 +145,7 @@ addEventListener('keyup',({key})=>{
         case 'w':
         case "ArrowUp":
             canJump = false;
+            jumpsNumber=0;
             break;
         case 'a':
         case "ArrowLeft":
