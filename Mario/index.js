@@ -13,8 +13,8 @@ const gravity = 1
 class Player{
     constructor(){
         this.position = {
-            x:0,
-            y:0
+            x:200,
+            y:720
         }
         this.velocity ={
             x:0,
@@ -60,7 +60,7 @@ class Block{
 }
 
 const player = new Player();
-const blocks = [new Block({x: 80, y:640}), new Block({x: 200, y:640}), new Block({x: 320, y:640}), 
+const blocks = [new Block({x: 80, y:640}),new Block({x: 200, y:640}),new Block({x: 320, y:640}), 
     new Block({x: 480, y:640}),new Block({x:240, y:480}), new Block({x: 240, y:480}), new Block({x: 440, y:320}), 
     new Block({x: 600, y:320})];
 const keys = {
@@ -74,6 +74,7 @@ let lastKey;
 let canJump=false;
 let jumpsNumber=0;
 let xblocks = true;
+let scrollScreen=200;
 
 //animate function
 
@@ -120,17 +121,21 @@ function animate(){
 
     if (keys.d.pressed && player.position.x < 420 && lastKey==="d" && xblocks){
         player.velocity.x=10;
-    } else if (keys.a.pressed && player.position.x > 210 && lastKey==="a" && xblocks){
+        scrollScreen+=10;
+    } else if ((keys.a.pressed && player.position.x > 200 && lastKey==="a" && xblocks)||(keys.a.pressed && lastKey==="a" && scrollScreen <= 200 && player.position.x > 0 && xblocks)){
         player.velocity.x=-10;
+        scrollScreen-=10;
     }else {
         player.velocity.x=0;
         if (keys.d.pressed && lastKey==="d" && xblocks){
             blocks.forEach(block => {
                 block.position.x-=10;
+                scrollScreen+=10;
             })
-        } else if (keys.a.pressed && lastKey==="a" && xblocks){
+        } else if ((keys.a.pressed && lastKey==="a" && xblocks && scrollScreen > 0)){
             blocks.forEach(block => {
                 block.position.x+=10;
+                scrollScreen-=10;
             })
         }
     };
