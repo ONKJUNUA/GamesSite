@@ -14,7 +14,7 @@ class Player{
     constructor(){
         this.position = {
             x:200,
-            y:720
+            y:760
         }
         this.velocity ={
             x:0,
@@ -60,9 +60,9 @@ class Block{
 }
 
 const player = new Player();
-const blocks = [new Block({x: 80, y:640}),new Block({x: 200, y:640}),new Block({x: 320, y:640}), 
-    new Block({x: 480, y:640}),new Block({x:240, y:480}), new Block({x: 240, y:480}), new Block({x: 440, y:320}), 
-    new Block({x: 600, y:320})];
+const blocks = [new Block({x: 80, y:640}),new Block({x: 120, y:640}),new Block({x: 160, y:640}), 
+    new Block({x: 200, y:640}),new Block({x:240, y:480}), new Block({x: 80, y:480}), new Block({x: 440, y:320}), 
+    new Block({x: 600, y:320}),new Block({x: 8000, y:320})];
 const keys = {
     a:{pressed:false},
     d:{pressed:false}
@@ -88,24 +88,86 @@ function animate(){
     if (player.position.y>0)
         xblocks=true
 
-    blocks.forEach(block => {
+    blocks.forEach((block, index) => {
        if (player.position.x + player.width + player.velocity.x >= block.position.x
            && player.position.x + player.velocity.x <= block.position.x + block.width
            && player.position.y + player.height > block.position.y
            && player.position.y <= block.position.y + block.height){
                xblocks=false;
            }
-        if (player.position.y >= block.position.y + block.height*0.9
-            && player.position.y + player.velocity.y <= block.position.y + block.height*0.9
+        if (player.position.y >= block.position.y + block.height
+            && player.position.y + player.velocity.y <= block.position.y + block.height
             && player.position.x + player.width >= block.position.x
             && player.position.x <= block.position.x + block.width){
                 player.velocity.y=5;
-                block.position.y-=20;
-                setTimeout(() => {
-                    block.position.y=-800;
-                  }, 50);
                 jumpsNumber=0;
+
+                if (blocks[index+1].position.x===block.position.x+40
+                    && player.position.x > block.position.x + (block.width/2)
+                    && blocks[index+1].position.y===block.position.y)
+                    setTimeout(() => {
+                        blocks[index+1].position.y-=4;
+                        setTimeout(() => {
+                            blocks[index+1].position.y-=4;
+                            setTimeout(() => {
+                                blocks[index+1].position.y-=4;
+                                setTimeout(() => {
+                                    blocks[index+1].position.y-=4;
+                                    setTimeout(() => {
+                                        blocks[index+1].position.y-=4;
+                                        setTimeout(() => {
+                                            blocks[index+1].position.y+=4;
+                                            setTimeout(() => {
+                                                blocks[index+1].position.y+=4;
+                                                setTimeout(() => {
+                                                    blocks[index+1].position.y+=4;
+                                                    setTimeout(() => {
+                                                        blocks[index+1].position.y+=4;
+                                                        setTimeout(() => {
+                                                            blocks[index+1].position.y+=4;
+                                                          }, 10);
+                                                      }, 10);
+                                                  }, 10);
+                                              }, 10);
+                                          }, 10);
+                                      }, 10);
+                                  }, 10);
+                              }, 10);
+                          }, 10);
+                      }, 10);
+
+                else setTimeout(() => {
+                        block.position.y-=4;
+                        setTimeout(() => {
+                            block.position.y-=4;
+                            setTimeout(() => {
+                                block.position.y-=4;
+                                setTimeout(() => {
+                                    block.position.y-=4;
+                                    setTimeout(() => {
+                                        block.position.y-=4;
+                                        setTimeout(() => {
+                                            block.position.y+=4;
+                                            setTimeout(() => {
+                                                block.position.y+=4;
+                                                setTimeout(() => {
+                                                    block.position.y+=4;
+                                                    setTimeout(() => {
+                                                        block.position.y+=4;
+                                                        setTimeout(() => {
+                                                            block.position.y+=4;
+                                                          }, 10);
+                                                      }, 10);
+                                                  }, 10);
+                                              }, 10);
+                                          }, 10);
+                                      }, 10);
+                                  }, 10);
+                              }, 10);
+                          }, 10);
+                      }, 10);
             }
+           
         else if (player.position.y + player.height <= block.position.y 
             && player.position.y + player.height + player.velocity.y > block.position.y
             && player.position.x + player.width >= block.position.x
@@ -122,6 +184,8 @@ function animate(){
             }
     });
     player.update();
+
+
 
     if (keys.d.pressed && player.position.x < 420 && lastKey==="d" && xblocks){
         player.velocity.x=10;
