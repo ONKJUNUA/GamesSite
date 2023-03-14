@@ -1597,7 +1597,7 @@ map_holder[level-1].forEach((row, i) => {
   })
 }
 
-map_creation(level)
+map_creation(level);
 
 function circleColliderWithRectangle({circle, rectangle}){
   const padding = Boundary.width/2 - circle.radius - 1
