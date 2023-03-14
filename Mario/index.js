@@ -24,8 +24,11 @@ class Player{
         this.height=40;
     }
     draw(){
-        c.fillStyle = '#777';
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        c.fillStyle = '#fff';
+        c.fillRect(this.position.x+10, this.position.y, 20, 20);
+        c.fillRect(this.position.x, this.position.y+10, 40, 10);
+        c.fillRect(this.position.x+30, this.position.y+10, 10, 30);
+        c.fillRect(this.position.x, this.position.y+10, 10, 30);
     }
     update(){
         this.draw();
@@ -57,14 +60,45 @@ class Block{
     }
     draw(){
         c.fillStyle = '#fff';
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        c.fillRect(this.position.x, this.position.y, 18, 12);
+        c.fillRect(this.position.x+1, this.position.y+14, 38, 12);
+        c.fillRect(this.position.x, this.position.y+28, 18, 12);
+
+        c.fillRect(this.position.x+20, this.position.y, 20, 12);
+        c.fillRect(this.position.x+20, this.position.y+28, 20, 12);
+    }
+}
+
+class Coin{
+    constructor({x,y}){
+        this.position={x,y}
+        this.width=20;
+        this.height=20;
+    }
+    draw(){
+        c.beginPath()
+        c.ellipse(this.position.x-2,this.position.y-2, 10, 15, 0, 0,Math.PI*2);
+        c.fillStyle='#fff'
+        c.fill()
+        c.closePath()
+        c.beginPath()
+        c.ellipse(this.position.x-2,this.position.y-2, 5, 10, 0, 0,Math.PI*2);
+        c.fillStyle='#222'
+        c.fill()
+        c.closePath()
+        c.beginPath()
+        c.ellipse(this.position.x-4,this.position.y-4, 5, 10, 0, 0,Math.PI*2);
+        c.fillStyle='#fff'
+        c.fill()
+        c.closePath()
     }
 }
 
 const player = new Player();
 const blocks = [];
+const coins = [];
 
-    const keys = {
+const keys = {
     a:{pressed:false},
     d:{pressed:false}
 };
@@ -98,7 +132,8 @@ const map1 = [
     [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
     [' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
     [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f']
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ','c','c','c','c','c','c',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f']
     ];
 
 function map_creation(){
@@ -110,6 +145,14 @@ function map_creation(){
                         new Block({
                             x: 40*j,
                             y: 40*i
+                        })
+                    )
+                break;
+                case 'c':
+                    coins.push(
+                        new Coin({
+                            x: 40*j+20,
+                            y: 40*i+20
                         })
                     )
                 break;
@@ -131,9 +174,13 @@ map_creation();
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
+    coins.forEach(coin => {
+        coin.draw();
+    });
     blocks.forEach(block => {
         block.draw();
     });
+    
 
     if (player.position.y>0)
         xblocks=true
@@ -246,10 +293,16 @@ function animate(){
                 block.position.x-=10;
                 scrollScreen+=10;
             })
+            coins.forEach(coin => {
+                coin.position.x-=10;
+            })
         } else if ((keys.a.pressed && lastKey==="a" && xblocks && scrollScreen > 0)){
             blocks.forEach(block => {
                 block.position.x+=10;
                 scrollScreen-=10;
+            })
+            coins.forEach(coin => {
+                coin.position.x+=10;
             })
         }
     };
