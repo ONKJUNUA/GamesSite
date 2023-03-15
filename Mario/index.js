@@ -3,76 +3,33 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
-canvas.width=800;
-canvas.height=800;
+canvas.width=1280;
+canvas.height=960;
 
-const gravity = 1
+const gravity = 1.6
 
 //classes
 
-const playerlook = [
-['0','0','0','0',    '0','0','2','2','0','0','0','0','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','2','2','2','2','0','0','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','2','2','2','2','0','0','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','1','1','1','2','0','0','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','1','1','1','2','0','0','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','1','1','1','1','0','0','2','2','0','0','0',    '0','0','0'],
-['0','0','0','0',    '2','2','1','1','1','1','2','2','0','0','2','2','0',    '0','0','0'],
-['0','0','0','2',    '2','0','0','0','2','3','3','2','0','0','0','2','0',    '0','0','0'],
-['0','0','0','2',    '2','0','0','0','0','2','3','2','0','0','0','2','0',    '0','0','0'],
-['0','0','0','0',    '1','1','0','0','0','2','3','2','0','0','1','1','0',    '0','0','0'],
-['0','0','0','0',    '1','1','0','0','0','2','2','3','3','0','0','1','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','0','0','2','2','2','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','0','0','3','3','3','0','0','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','0','3','3','3','3','3','3','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','3','3','3','0','0','0','0','3','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','3','3','0','0','0','0','0','3','3','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','3','0','0','0','0','0','3','3','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','3','3','4','0','0','3','3','0','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','4','4','0','0','0','4','4','4','0','0',    '0','0','0'],
-['0','0','0','0',    '0','0','0','0','0','0','0','0','0','0','0','0','0',    '0','0','0']
-];
-
-function player_creation(create) {
-    for(i = 0; i < create.length; i++) {
-        for(j = 0; j < create.length; j++) {
-            if (create[i][j] === '1') {
-                c.fillStyle = '#fff';
-                c.fillRect(player.position.x+j*2, player.position.y+i*2, 2, 2); 
-            }
-            if (create[i][j] === '2') {
-                c.fillStyle = '#999';
-                c.fillRect(player.position.x+j*2, player.position.y+i*2, 2, 2); 
-            }
-            if (create[i][j] === '3') {
-                c.fillStyle = '#777';
-                c.fillRect(player.position.x+j*2, player.position.y+i*2, 2, 2); 
-            }
-            if (create[i][j] === '4') {
-                c.fillStyle = '#555';
-                c.fillRect(player.position.x+j*2, player.position.y+i*2, 2, 2); 
-            }
-        }
-    }
-}
-
 class Player{
-    constructor(){
+    constructor({image}){
         this.position = {
-            x:200,
-            y:760
+            x:160,
+            y:640
         }
         this.velocity ={
             x:0,
             y:0
         }
-        this.width=40;
-        this.height=40;
+        this.width=48;
+        this.height=64;
+        this.image=image;
     }
-    draw(){
-        player_creation(playerlook);
-        
+    draw() {
+        c.fillStyle = '#fff';
+        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        //c.drawImage(this.image,this.position.x,this.position.y-20)
     }
+
     update(){
         this.draw();
         this.position.y+=this.velocity.y;
@@ -84,10 +41,10 @@ class Player{
         else {
             this.velocity.y=0;
             if (player.velocity.y===0 && canJump){
-                player.velocity.y=-20;
+                player.velocity.y=-32;
                 jumpsNumber++;
                     if (jumpsNumber===3){
-                        player.velocity.y=-30;
+                        player.velocity.y=-48;
                         jumpsNumber=0;
                     }
             }
@@ -98,46 +55,52 @@ class Player{
 class Block{
     constructor({x,y}){
         this.position={x,y}
-        this.width=40;
-        this.height=40;
+        this.width=64;
+        this.height=64;
     }
     draw(){
         c.fillStyle = '#fff';
-        c.fillRect(this.position.x, this.position.y, 18, 12);
-        c.fillRect(this.position.x+1, this.position.y+14, 38, 12);
-        c.fillRect(this.position.x, this.position.y+28, 18, 12);
+        c.fillRect(this.position.x, this.position.y, 28, 20);
+        c.fillRect(this.position.x+2, this.position.y+24, 60, 20);
+        c.fillRect(this.position.x, this.position.y+48, 28, 20);
 
-        c.fillRect(this.position.x+20, this.position.y, 20, 12);
-        c.fillRect(this.position.x+20, this.position.y+28, 20, 12);
+        c.fillRect(this.position.x+32, this.position.y, 32, 20);
+        c.fillRect(this.position.x+32, this.position.y+48, 32, 20);
     }
 }
 
 class Coin{
     constructor({x,y}){
         this.position={x,y}
-        this.width=20;
-        this.height=20;
+        this.width=32;
+        this.height=32;
     }
     draw(){
         c.beginPath()
-        c.ellipse(this.position.x-2,this.position.y-2, 10, 15, 0, 0,Math.PI*2);
+        c.ellipse(this.position.x-2,this.position.y-2, 15, 25, 0, 0,Math.PI*2);
         c.fillStyle='#fff'
         c.fill()
         c.closePath()
         c.beginPath()
-        c.ellipse(this.position.x-2,this.position.y-2, 5, 10, 0, 0,Math.PI*2);
+        c.ellipse(this.position.x-2,this.position.y-2, 10, 15, 0, 0,Math.PI*2);
         c.fillStyle='#222'
         c.fill()
         c.closePath()
         c.beginPath()
-        c.ellipse(this.position.x-4,this.position.y-4, 5, 10, 0, 0,Math.PI*2);
+        c.ellipse(this.position.x-6,this.position.y-4, 10, 15, 0, 0,Math.PI*2);
         c.fillStyle='#fff'
         c.fill()
         c.closePath()
     }
 }
 
-const player = new Player();
+function createImage(src) {
+    const image=new Image()
+    image.src=src
+    return image
+}
+
+const player = new Player({image: createImage('img/gracz.png')});
 const blocks = [];
 const coins = [];
 
@@ -152,7 +115,7 @@ let lastKey;
 let canJump=false;
 let jumpsNumber=0;
 let xblocks = true;
-let scrollScreen=200;
+let scrollScreen=160;
 
 //maps
 
@@ -171,12 +134,7 @@ const map1 = [
     [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
     [' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
     [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','b','b','b',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f'],
-    [' ',' ',' ',' ',' ',' ',' ',' ',' ','c','c','c','c','c','c',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f']
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','c',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','f']
     ];
 
 function map_creation(){
@@ -186,16 +144,16 @@ function map_creation(){
                 case 'b':
                     blocks.push(
                         new Block({
-                            x: 40*j,
-                            y: 40*i
+                            x: 64*j,
+                            y: 64*i
                         })
                     )
                 break;
                 case 'c':
                     coins.push(
                         new Coin({
-                            x: 40*j+20,
-                            y: 40*i+20
+                            x: 64*j+32,
+                            y: 64*i+32
                         })
                     )
                 break;
@@ -204,8 +162,8 @@ function map_creation(){
     })
     blocks.push(
         new Block({
-            x: -40,
-            y: -40
+            x: -64,
+            y: -64
         })
     )
 }
@@ -242,7 +200,7 @@ function animate(){
                 player.velocity.y=5;
                 jumpsNumber=0;
 
-                if (blocks[index+1].position.x===block.position.x+40
+                if (blocks[index+1].position.x===block.position.x+64
                     && player.position.x > block.position.x + (block.width/2)
                     && blocks[index+1].position.y===block.position.y)
                     setTimeout(() => {
@@ -314,38 +272,38 @@ function animate(){
             && player.position.x <= block.position.x + block.width){    
                 player.velocity.y=0;
                 if (player.velocity.y===0 && canJump){
-                    player.velocity.y=-20;
+                    player.velocity.y=-32;
                     jumpsNumber++;
                     if (jumpsNumber===3){
-                        player.velocity.y=-30;
+                        player.velocity.y=-48;
                         jumpsNumber=0;
                     }
                 }
             }
     });
     if (keys.d.pressed && player.position.x < 420 && lastKey==="d" && xblocks){
-        player.velocity.x=10;
-        scrollScreen+=10;
+        player.velocity.x=16;
+        scrollScreen+=16;
     } else if ((keys.a.pressed && player.position.x > 200 && lastKey==="a" && xblocks)||(keys.a.pressed && lastKey==="a" && scrollScreen <= 200 && player.position.x > 0 && xblocks)){
-        player.velocity.x=-10;
-        scrollScreen-=10;
+        player.velocity.x=-16;
+        scrollScreen-=16;
     }else {
         player.velocity.x=0;
         if (keys.d.pressed && lastKey==="d" && xblocks){
             blocks.forEach(block => {
-                block.position.x-=10;
-                scrollScreen+=10;
+                block.position.x-=16;
+                scrollScreen+=16;
             })
             coins.forEach(coin => {
-                coin.position.x-=10;
+                coin.position.x-=16;
             })
         } else if ((keys.a.pressed && lastKey==="a" && xblocks && scrollScreen > 0)){
             blocks.forEach(block => {
-                block.position.x+=10;
-                scrollScreen-=10;
+                block.position.x+=16;
+                scrollScreen-=16;
             })
             coins.forEach(coin => {
-                coin.position.x+=10;
+                coin.position.x+=16;
             })
         }
     };
