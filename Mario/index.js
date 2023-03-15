@@ -25,9 +25,7 @@ class Player{
         this.image=image;
     }
     draw() {
-        c.fillStyle = '#fff';
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
-        //c.drawImage(this.image,this.position.x,this.position.y-20)
+        c.drawImage(this.image,this.position.x,this.position.y)
     }
 
     update(){
