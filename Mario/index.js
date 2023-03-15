@@ -6,7 +6,7 @@ const c = canvas.getContext('2d');
 canvas.width=1280;
 canvas.height=960;
 
-const gravity = 1.6
+const gravity = 2
 
 //classes
 
@@ -114,6 +114,7 @@ let canJump=false;
 let jumpsNumber=0;
 let xblocks = true;
 let scrollScreen=160;
+let speed=8;
 
 //maps
 
@@ -195,7 +196,7 @@ function animate(){
             && player.position.y + player.velocity.y <= block.position.y + block.height
             && player.position.x + player.width >= block.position.x
             && player.position.x <= block.position.x + block.width){
-                player.velocity.y=5;
+                player.velocity.y=4;
                 jumpsNumber=0;
 
                 if (blocks[index+1].position.x===block.position.x+64
@@ -280,30 +281,34 @@ function animate(){
             }
     });
     if (keys.d.pressed && player.position.x < 420 && lastKey==="d" && xblocks){
-        player.velocity.x=16;
-        scrollScreen+=16;
+        player.velocity.x=speed;
+        scrollScreen+=speed;
     } else if ((keys.a.pressed && player.position.x > 200 && lastKey==="a" && xblocks)||(keys.a.pressed && lastKey==="a" && scrollScreen <= 200 && player.position.x > 0 && xblocks)){
-        player.velocity.x=-16;
-        scrollScreen-=16;
+        player.velocity.x=-speed;
+        scrollScreen-=speed;
     }else {
         player.velocity.x=0;
         if (keys.d.pressed && lastKey==="d" && xblocks){
             blocks.forEach(block => {
-                block.position.x-=16;
-                scrollScreen+=16;
+                block.position.x-=speed;
+                scrollScreen+=speed;
             })
             coins.forEach(coin => {
-                coin.position.x-=16;
+                coin.position.x-=speed;
             })
         } else if ((keys.a.pressed && lastKey==="a" && xblocks && scrollScreen > 0)){
             blocks.forEach(block => {
-                block.position.x+=16;
-                scrollScreen-=16;
+                block.position.x+=speed;
+                scrollScreen-=speed;
             })
             coins.forEach(coin => {
-                coin.position.x+=16;
+                coin.position.x+=speed;
             })
         }
+
+    if ((keys.a.pressed || keys.d.pressed) && speed < 16) speed += 1;
+    if (!keys.a.pressed && !keys.d.pressed) speed = 8;
+    
     };
     player.update();
 };
