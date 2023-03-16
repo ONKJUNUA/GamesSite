@@ -1,98 +1,97 @@
-var canvas = document.getElementById("gameCanvas");
-var ctx = canvas.getContext("2d");
+// set up canvas and context
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
 
-var player = {
-	x: canvas.width/2,
-	y: canvas.height/2,
-	width: 32,
-	height: 32,
-	speed: 5
+// set up player object with position and speed
+const player = {
+  x: 100,
+  y: 100,
+  speed: 5,
+  width: 32,
+  height: 32,
+  isAlive: true
 };
 
-var keysDown = {};
+// set up enemy object with position and size
+const enemy = {
+  x: 400,
+  y: 300,
+  width: 64,
+  height: 64
+};
+
+// set up map boundaries
 const map = {
-    width: 800,
-    height: 600
-  };
+  width: 800,
+  height: 600
+};
 
+// update player position based on user input
 function update() {
-	if (38 in keysDown) { // up arrow
-		player.y -= player.speed;
-	}
-	if (40 in keysDown) { // down arrow
-		player.y += player.speed;
-	}
-	if (37 in keysDown) { // left arrow
-		player.x -= player.speed;
-	}
-	if (39 in keysDown) { // right arrow
-		player.x += player.speed;
-	}
+  if (38 in keysDown) { // up arrow
+    player.y -= player.speed;
+  }
+  if (40 in keysDown) { // down arrow
+    player.y += player.speed;
+  }
+  if (37 in keysDown) { // left arrow
+    player.x -= player.speed;
+  }
+  if (39 in keysDown) { // right arrow
+    player.x += player.speed;
+  }
 
-    if (player.x < 0) {
-        player.x = 0;
-      }
-      if (player.y < 0) {
-        player.y = 0;
-      }
-      if (player.x + player.width > map.width) {
-        player.x = map.width - player.width;
-      }
-      if (player.y + player.height > map.height) {
-        player.y = map.height - player.height;
-      }
+  // check if player is out of bounds and adjust position if necessary
+  if (player.x < 0) {
+    player.x = 0;
+  }
+  if (player.y < 0) {
+    player.y = 0;
+  }
+  if (player.x + player.width > map.width) {
+    player.x = map.width - player.width;
+  }
+  if (player.y + player.height > map.height) {
+    player.y = map.height - player.height;
+  }
+
+  // check if player is touching enemy and set isAlive flag to false if true
+  if (player.x < enemy.x + enemy.width &&
+      player.x + player.width > enemy.x &&
+      player.y < enemy.y + enemy.height &&
+      player.y + player.height > enemy.y) {
+    player.isAlive = false;
+  }
 }
 
+// draw player and enemy on canvas
 function draw() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.beginPath();
-ctx.arc(player.x+player.width/2, player.y-player.height*2, 50, 0, 2 * Math.PI);
-ctx.fillStyle = "#ffb6c1";
-ctx.fill();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// draw body
-ctx.fillRect(player.x-player.width, player.y, player.width*3, player.height*5);
-ctx.fillStyle = "#ff69b4";
-ctx.fill();
+  if (player.isAlive) {
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+  }
 
-// draw left arm
-ctx.beginPath();
-ctx.fillRect(player.x-player.width*4.5, player.y, player.width*3, player.height);
-ctx.fillStyle = "#ffb6c1";
-ctx.fill();
-
-// draw right arm
-ctx.beginPath();
-ctx.fillRect(player.x+player.width*2.5, player.y, player.width*3, player.height);
-ctx.fillStyle = "#ffb6c1";
-ctx.fill();
-
-// draw left leg
-ctx.beginPath();
-ctx.fillRect(player.x-player.width, player.y+player.width*5.5, player.width, player.height*3);
-ctx.fillStyle = "#ff69b4";
-ctx.fill();
-
-// draw right leg
-ctx.beginPath();
-ctx.fillRect(player.x+player.width, player.y+player.width*5.5, player.width, player.height*3);
-ctx.fillStyle = "#ff69b4";
-ctx.fill();
+  ctx.fillStyle = "#00FF00";
+  ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
 }
 
-function gameLoop() {
-	update();
-	draw();
-	
-	requestAnimationFrame(gameLoop);
-}
-
-gameLoop();
-
+// set up key event listeners
+const keysDown = {};
 addEventListener("keydown", function(e) {
-	keysDown[e.keyCode] = true;
+  keysDown[e.keyCode] = true;
+});
+addEventListener("keyup", function(e) {
+  delete keysDown[e.keyCode];
 });
 
-addEventListener("keyup", function(e) {
-	delete keysDown[e.keyCode];
-});
+// game loop
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+// start game loop
+gameLoop();
