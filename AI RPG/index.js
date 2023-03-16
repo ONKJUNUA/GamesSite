@@ -28,42 +28,39 @@ function update() {
 
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.beginPath();
-ctx.arc(100, 100, 50, 0, 2 * Math.PI);
+ctx.beginPath();
+ctx.arc(player.x+player.width/2, player.y-player.height*2, 50, 0, 2 * Math.PI);
 ctx.fillStyle = "#ffb6c1";
 ctx.fill();
 
 // draw body
-ctx.fillRect(75, 150, 50, 100);
+ctx.fillRect(player.x-player.width, player.y, player.width*3, player.height*5);
 ctx.fillStyle = "#ff69b4";
 ctx.fill();
 
 // draw left arm
 ctx.beginPath();
-ctx.fillRect(20, 150, 50, 20);
+ctx.fillRect(player.x-player.width*4.5, player.y, player.width*3, player.height);
 ctx.fillStyle = "#ffb6c1";
 ctx.fill();
 
 // draw right arm
 ctx.beginPath();
-ctx.fillRect(130, 150, 50, 20);
+ctx.fillRect(player.x+player.width*2.5, player.y, player.width*3, player.height);
 ctx.fillStyle = "#ffb6c1";
 ctx.fill();
 
 // draw left leg
 ctx.beginPath();
-ctx.fillRect(75, 250, 20, 50);
+ctx.fillRect(player.x-player.width, player.y+player.width*5.5, player.width, player.height*3);
 ctx.fillStyle = "#ff69b4";
 ctx.fill();
 
 // draw right leg
 ctx.beginPath();
-ctx.fillRect(105, 250, 20, 50);
+ctx.fillRect(player.x+player.width, player.y+player.width*5.5, player.width, player.height*3);
 ctx.fillStyle = "#ff69b4";
 ctx.fill();
-	
-ctx.fillStyle = "#FF0000";
-ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
 function gameLoop() {
