@@ -10,6 +10,10 @@ var player = {
 };
 
 var keysDown = {};
+const map = {
+    width: 800,
+    height: 600
+  };
 
 function update() {
 	if (38 in keysDown) { // up arrow
@@ -24,6 +28,19 @@ function update() {
 	if (39 in keysDown) { // right arrow
 		player.x += player.speed;
 	}
+
+    if (player.x < 0) {
+        player.x = 0;
+      }
+      if (player.y < 0) {
+        player.y = 0;
+      }
+      if (player.x + player.width > map.width) {
+        player.x = map.width - player.width;
+      }
+      if (player.y + player.height > map.height) {
+        player.y = map.height - player.height;
+      }
 }
 
 function draw() {
