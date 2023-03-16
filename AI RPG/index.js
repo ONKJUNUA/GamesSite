@@ -14,11 +14,13 @@ const player = {
 
 // set up enemy object with position and size
 const enemy = {
-  x: 400,
-  y: 300,
-  width: 64,
-  height: 64
-};
+    x: 400,
+    y: 300,
+    width: 64,
+    height: 64,
+    velocityX: 2,
+    velocityY: -2
+  };
 
 // set up map boundaries
 const map = {
@@ -55,6 +57,22 @@ function update() {
     player.y = map.height - player.height;
   }
 
+    // move enemy randomly
+    if (Math.random() < 0.02) { // chance to change direction
+        enemy.velocityX = Math.random() * 4 - 2;
+        enemy.velocityY = Math.random() * 4 - 2;
+      }
+      enemy.x += enemy.velocityX;
+      enemy.y += enemy.velocityY;
+    
+      // check if enemy is out of bounds and adjust velocity if necessary
+      if (enemy.x < 0 || enemy.x + enemy.width > map.width) {
+        enemy.velocityX = -enemy.velocityX;
+      }
+      if (enemy.y < 0 || enemy.y + enemy.height > map.height) {
+        enemy.velocityY = -enemy.velocityY;
+      }
+
   // check if player is touching enemy and set isAlive flag to false if true
   if (player.x < enemy.x + enemy.width &&
       player.x + player.width > enemy.x &&
@@ -62,16 +80,20 @@ function update() {
       player.y + player.height > enemy.y) {
     player.isAlive = false;
   }
-}
 
+  if (!player.isAlive){
+    player.x=100;
+    player.y=100;
+    player.isAlive = true;
+    player.speed=0;
+}
+}
 // draw player and enemy on canvas
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (player.isAlive) {
-    ctx.fillStyle = "#FF0000";
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-  }
+ 
+  ctx.fillStyle = "#FF0000";
+  ctx.fillRect(player.x, player.y, player.width, player.height);  
 
   ctx.fillStyle = "#00FF00";
   ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
