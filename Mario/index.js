@@ -58,12 +58,12 @@ class Block{
     }
     draw(){
         c.fillStyle = '#fff';
-        c.fillRect(this.position.x, this.position.y, 28, 20);
+        c.fillRect(this.position.x, this.position.y+2, 28, 18);
         c.fillRect(this.position.x+2, this.position.y+24, 60, 20);
-        c.fillRect(this.position.x, this.position.y+48, 28, 20);
+        c.fillRect(this.position.x, this.position.y+48, 28, 18);
 
-        c.fillRect(this.position.x+32, this.position.y, 32, 20);
-        c.fillRect(this.position.x+32, this.position.y+48, 32, 20);
+        c.fillRect(this.position.x+32, this.position.y+2, 32, 18);
+        c.fillRect(this.position.x+32, this.position.y+48, 32, 18);
     }
 }
 
@@ -189,13 +189,16 @@ function animate(){
        if (player.position.x + player.width + player.velocity.x >= block.position.x
            && player.position.x + player.velocity.x <= block.position.x + block.width
            && player.position.y + player.height > block.position.y
-           && player.position.y <= block.position.y + block.height){
-               xblocks=false;
+           && player.position.y < block.position.y + block.height){
+            if (lastKey==='d' && player.position.x < block.position.x) player.position.x=block.position.x-player.width-10;
+            if (lastKey==='a' && player.position.x > block.position.x) player.position.x=block.position.x+block.width+10;
            }
+           
+
         if (player.position.y >= block.position.y + block.height
             && player.position.y + player.velocity.y <= block.position.y + block.height
-            && player.position.x + player.width >= block.position.x
-            && player.position.x <= block.position.x + block.width){
+            && player.position.x + player.width > block.position.x
+            && player.position.x < block.position.x + block.width){
                 player.velocity.y=4;
                 jumpsNumber=0;
 
@@ -306,7 +309,7 @@ function animate(){
                 coin.position.x+=speed;
             })
         }
-        if ((keys.d.pressed || keys.a.pressed) && speed < 100) speed+=1;
+        if ((keys.d.pressed || keys.a.pressed) && speed < 24) speed+=1;
         if (!keys.d.pressed && !keys.a.pressed) speed=8;
         if (player.position.x<=0) player.position.x=0;
     
