@@ -2,35 +2,33 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Tic Tac Toe</title>
+    <title>Shakes & Fidget</title>
     <style>
-      #board {
-        width: 306px;
-        height: 306px;
+      #game {
+        width: 400px;
+        height: 400px;
         border: 1px solid black;
-        display: flex;
-        flex-wrap: wrap;
+        position: relative;
       }
-      .cell {
-        width: 100px;
-        height: 100px;
-        border: 1px solid black;
-        font-size: 72px;
-        text-align: center;
+      #player {
+        width: 20px;
+        height: 20px;
+        background-color: blue;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .enemy {
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        position: absolute;
       }
     </style>
   </head>
   <body>
-    <div id="board">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
+    <div id="game">
+      <div id="player"></div>
     </div>
     <script src="index.js"></script>
   </body>

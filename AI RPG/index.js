@@ -1,47 +1,57 @@
-const board = ["", "", "", "", "", "", "", "", ""];
-let currentPlayer = "X";
-const cells = document.querySelectorAll(".cell");
+const game = document.getElementById("game");
+const player = document.getElementById("player");
+const enemies = [];
+let score = 0;
 
-function play(event) {
-  const cell = event.target;
-  const index = Array.from(cells).indexOf(cell);
-  if (board[index] === "") {
-    board[index] = currentPlayer;
-    cell.textContent = currentPlayer;
-    if (checkWin() !== "") {
-      alert(currentPlayer + " wins!");
-      reset();
-    } else if (board.every(cell => cell !== "")) {
-      alert("Tie!");
-      reset();
-    } else {
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-    }
-  }
+function spawnEnemy() {
+  const enemy = document.createElement("div");
+  enemy.classList.add("enemy");
+  enemy.style.top = Math.floor(Math.random() * (game.offsetHeight - 20)) + "px";
+  enemy.style.left = game.offsetWidth - 20 + "px";
+  game.appendChild(enemy);
+  enemies.push(enemy);
 }
 
-function checkWin() {
-  const winCombinations = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-    [0, 4, 8], [2, 4, 6] // diagonals
-  ];
-  for (const combination of winCombinations) {
-    if (board[combination[0]] === board[combination[1]] && board[combination[1]] === board[combination[2]] && board[combination[0]] !== "") {
-      return board[combination[0]];
+function moveEnemies() {
+  enemies.forEach(enemy => {
+    enemy.style.left = parseInt(enemy.style.left) - 1 + "px";
+    if (isColliding(player, enemy)) {
+      endGame();
     }
-  }
-  return "";
+    if (parseInt(enemy.style.left) + 20 < 0) {
+      enemy.remove();
+      score++;
+    }
+  });
+}
+
+function isColliding(a, b) {
+  const aRect = a.getBoundingClientRect();
+  const bRect = b.getBoundingClientRect();
+  return !(aRect.right < bRect.left || aRect.left > bRect.right || aRect.bottom < bRect.top || aRect.top > bRect.bottom);
+}
+
+function endGame() {
+  alert("Game over! Your score: " + score);
+  reset();
 }
 
 function reset() {
-  for (const cell of cells) {
-    cell.textContent = "";
-  }
-  board.fill("");
-  currentPlayer = "X";
+  player.style.top = 0;
+  player.style.left = 0;
+  enemies.forEach(enemy => enemy.remove());
+  enemies.length = 0;
+  score = 0;
 }
 
-for (const cell of cells) {
-  cell.addEventListener("click", play);
-}
+document.addEventListener("keydown", event => {
+  if (event.key === "ArrowUp") {
+    player.style.top -= 10 + "px";
+  }
+  if (event.key === "ArrowDown") {
+    player.style.top += 10 + "px";
+  }
+});
+setInterval(spawnEnemy, 1000);
+setInterval(moveEnemies, 10);
+movePlayer();
