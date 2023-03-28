@@ -25,6 +25,25 @@ body {
   display: flex;
   column-gap: 10rem;
 }
+.container.start .user_result {
+  transform-origin: left;
+  animation: userShake 0.3s ease infinite;
+}
+@keyframes userShake {
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+.container.start .cpu_result {
+  transform-origin: right;
+  animation: cpuShake 0.3s ease infinite;
+}
+@keyframes cpuShake {
+  50% {
+    transform: rotate(-10deg);
+  }
+}
 .result_images img {
   width: 100px;
 }
@@ -61,4 +80,19 @@ body {
   opacity: 0.5;
   cursor: pointer;
   transition: opacity 0.3s ease;
+}
+.option_image:hover {
+  opacity: 1;
+}
+.option_image.active {
+  opacity: 1;
+}
+.option_image img {
+  pointer-events: none;
+}
+.option_image p {
+  color: #000;
+  font-size: 1.235rem;
+  margin-top: 1rem;
+  pointer-events: none;
 }
