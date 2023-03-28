@@ -15,7 +15,30 @@ optionImages.forEach((image, index) => {
       index !== index2 && image2.classList.remove("active");
     });
 
-   
+    gameContainer.classList.add("start");
+
+    
+      gameContainer.classList.remove("start");
+      let imageSrc = e.target.querySelector("img").src;
+      userResult.src = imageSrc;
+      let randomNumber = Math.floor(Math.random() * 3);
+      let cpuImages = ["images/rock.png", "images/paper.png", "images/scissors.png"];
+      cpuResult.src = cpuImages[randomNumber];
+      let cpuValue = ["R", "P", "S"][randomNumber];
+      let userValue = ["R", "P", "S"][index];
+      let outcomes = {
+        RR: "Draw",
+        RP: "Komputer",
+        RS: "Gracz",
+        PP: "Draw",
+        PR: "Gracz",
+        PS: "Komputer",
+        SS: "Draw",
+        SR: "Komputer",
+        SP: "Gracz",
+      };
+      let outComeValue = outcomes[userValue + cpuValue];
+      result.textContent = userValue === cpuValue ? "Remis!" : `${outComeValue} Wygrywa!`;
     
   });
 });
