@@ -17,7 +17,7 @@ optionImages.forEach((image, index) => {
 
     gameContainer.classList.add("start");
 
-    
+    let time = setTimeout(() => {
       gameContainer.classList.remove("start");
       let imageSrc = e.target.querySelector("img").src;
       userResult.src = imageSrc;
@@ -39,7 +39,7 @@ optionImages.forEach((image, index) => {
       };
       let outComeValue = outcomes[userValue + cpuValue];
       result.textContent = userValue === cpuValue ? "Remis!" : `${outComeValue} Wygrywa!`;
-    
+    }, 900);
   });
 });
  
