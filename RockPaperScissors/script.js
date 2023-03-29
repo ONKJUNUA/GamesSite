@@ -12,9 +12,11 @@ optionImages.forEach((image, index) => {
     result.textContent = "Kamień!";
     setTimeout(() => {
       result.textContent = "Papier!";
+      userResult.src = cpuResult.src = "images/paper.png";
     }, 500);
     setTimeout(() => {
       result.textContent = "Nożyce!";
+      userResult.src = cpuResult.src = "images/scissors.png";
     }, 1000);
 
     optionImages.forEach((image2, index2) => {
@@ -23,7 +25,7 @@ optionImages.forEach((image, index) => {
 
     gameContainer.classList.add("start");
 
-    let time = setTimeout(() => {
+    setTimeout(() => {
       gameContainer.classList.remove("start");
       let imageSrc = e.target.querySelector("img").src;
       userResult.src = imageSrc;
