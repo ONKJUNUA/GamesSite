@@ -9,7 +9,13 @@ optionImages.forEach((image, index) => {
     image.classList.add("active");
 
     userResult.src = cpuResult.src = "images/rock.png";
-    result.textContent = "Poczekajmy...";
+    result.textContent = "Kamień!";
+    setTimeout(() => {
+      result.textContent = "Papier!";
+    }, 500);
+    setTimeout(() => {
+      result.textContent = "Nożyce!";
+    }, 1000);
 
     optionImages.forEach((image2, index2) => {
       index !== index2 && image2.classList.remove("active");
@@ -39,7 +45,7 @@ optionImages.forEach((image, index) => {
       };
       let outComeValue = outcomes[userValue + cpuValue];
       result.textContent = userValue === cpuValue ? "Remis!" : `${outComeValue} Wygrywa!`;
-    }, 900);
+    }, 1500);
   });
 });
  
