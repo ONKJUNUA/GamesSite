@@ -9,16 +9,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f6f7fb;
+  background: linear-gradient(#000, #222, #000);
 }
 ::selection {
-  color: #fff;
+  color: #222;
   background-color: #000;
 }
 .container {
   padding: 5rem 7rem;
   border-radius: 14px;
-  background: #fff;
+  background: linear-gradient(#ccc, #fff, #ccc);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 .result_images {
@@ -31,7 +31,7 @@ body {
 }
 @keyframes userShake {
   50% {
-    transform: rotate(10deg);
+    transform: rotate(15deg);
   }
 }
 
@@ -41,7 +41,7 @@ body {
 }
 @keyframes cpuShake {
   50% {
-    transform: rotate(-10deg);
+    transform: rotate(-15deg);
   }
 }
 .result_images img {
