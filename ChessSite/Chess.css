@@ -40,27 +40,19 @@ li {
 }
 
 
-
 .allimg {
-    width: 45px;
+    width: 50px;
     position: relative;
     bottom: 5px;
 }
 
 .allpawn {
-    transform: scale(.7);
+    transform: translatey(7px) scale(.7);
 }
 
 .authcont {
     width: 100vw;
 }
-
-.author {
-    float: right;
-    margin-right: 50px;
-
-}
-
 
 @media (max-width:650px){
 
