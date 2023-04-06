@@ -3,7 +3,7 @@
 	padding: 0;
 }
 body{
-	background: #ddd;
+	background: #222;
 }
 #board{
 	width: 600px;
@@ -19,19 +19,19 @@ body{
 }
 
 #board .even div:nth-child(even){
-	background: #ccd;
+	background: #ccc;
 }
 
 #board .even div:nth-child(odd){
-	background: rgb(112,112,112);/*621700*/
+	background: #555;/*621700*/
 }
 
 #board .odd div:nth-child(even){
-	background: rgb(112,112,112);/*621700*/
+	background: #555;/*621700*/
 }
 
 #board .odd div:nth-child(odd){
-	background: #ccd;
+	background: #ccc;
 }
 
 .animate{
