@@ -19,19 +19,19 @@ body{
 }
 
 #board .even div:nth-child(even){
-	background: #ccc;
+	background: #ddd;
 }
 
 #board .even div:nth-child(odd){
-	background: #555;/*621700*/
+	background: #888;/*621700*/
 }
 
 #board .odd div:nth-child(even){
-	background: #555;/*621700*/
+	background: #888;/*621700*/
 }
 
 #board .odd div:nth-child(odd){
-	background: #ccc;
+	background: #ddd;
 }
 
 .animate{
@@ -146,17 +146,21 @@ img{
 }
 #turn{
 	text-align: center;
-	font-size: 18px;
+	color: #ddd;
+	font-size: 50px;
+	margin-top: 20px;
 }
 .winning-sign:first-letter{
 	text-transform: uppercase;
 }
 
 .flip-board{
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 30px;
 	padding: 10px 20px;
     border-radius: 5px !important;
     outline: 0;
-    background: #7f979e;
-    color: white;
+    background: #ddd;
+    color: #222;
     border: 0;
 }
