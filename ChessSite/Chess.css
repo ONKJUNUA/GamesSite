@@ -164,3 +164,8 @@ img{
     color: #222;
     border: 0;
 }
+
+#boardflip{
+	text-align: center;
+	margin-top: 50px;
+}
